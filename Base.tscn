@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=2]
+[gd_scene load_steps=13 format=2]
 
 [ext_resource path="res://images/Minifantasy_DungeonFloorTiles.png" type="Texture" id=1]
 [ext_resource path="res://images/Minifantasy_DungeonWallTiles.png" type="Texture" id=2]
@@ -9,6 +9,7 @@
 [ext_resource path="res://units/Orc/Orc.tscn" type="PackedScene" id=7]
 [ext_resource path="res://images/selected.png" type="Texture" id=8]
 [ext_resource path="res://UIOverlayTileMap.gd" type="Script" id=9]
+[ext_resource path="res://images/check.png" type="Texture" id=10]
 
 [sub_resource type="TileSet" id=25]
 0/name = "Minifantasy_DungeonFloorTiles.png 0"
@@ -126,6 +127,10 @@ cell_quadrant_size = 4
 cell_custom_transform = Transform2D( 1, 0, 0, 1, 0, 0 )
 format = 1
 script = ExtResource( 9 )
+
+[node name="EndTurn" type="Sprite" parent="."]
+texture = ExtResource( 10 )
+centered = false
 
 [connection signal="tile_left_clicked" from="TerrainTileMap" to="." method="_on_TileMap_tile_left_clicked"]
 [connection signal="tile_right_clicked" from="TerrainTileMap" to="." method="_on_TileMap_tile_right_clicked"]
