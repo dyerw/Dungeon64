@@ -1,7 +1,7 @@
 extends Node2D
 
-export var human_sprite: PackedScene
-export var selected_scene: PackedScene
+export var human: PackedScene
+export var orc: PackedScene
 
 var _grid_to_unit = []
 var selected = null
@@ -17,8 +17,11 @@ func _initialize_grid():
 func _ready():
 	_initialize_grid()
 	
-	var h = human_sprite.instance()
+	var h = human.instance()
+	var o = orc.instance()
+	add_child(o)
 	add_child(h)
+	move_unit(o, Vector2(1,1))
 	move_unit(h, Vector2(3,3))
 
 func move_unit(entity: Node2D, pos: Vector2):
@@ -27,6 +30,7 @@ func move_unit(entity: Node2D, pos: Vector2):
 	
 	entity.position = $TerrainTileMap.map_to_world(pos)
 	_grid_to_unit[pos.x][pos.y] = entity
+	entity.move(pos)
 
 func get_unit(pos: Vector2) -> Node2D:
 	return _grid_to_unit[pos.x][pos.y]
