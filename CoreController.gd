@@ -21,16 +21,19 @@ func _ready():
 	var o = orc.instance()
 	add_child(o)
 	add_child(h)
-	move_unit(o, Vector2(1,1))
-	move_unit(h, Vector2(3,3))
+	h.position = $TerrainTileMap.map_to_world(Vector2(1,1))
+	update_grid(h, Vector2(1,1))
+	update_grid(o, Vector2(3,3))
+	o.position = $TerrainTileMap.map_to_world(Vector2(3,3))
 
-func move_unit(entity: Node2D, pos: Vector2):
+func update_grid(entity: Node2D, pos: Vector2):
 	var old_position = $TerrainTileMap.world_to_map(entity.position)
 	_grid_to_unit[old_position.x][old_position.y] = null
-	
-	entity.position = $TerrainTileMap.map_to_world(pos)
 	_grid_to_unit[pos.x][pos.y] = entity
-	entity.move(pos)
+
+func move_unit(entity: Node2D, pos: Vector2):
+	update_grid(entity, pos)
+	entity.move($TerrainTileMap.map_to_world(pos))
 
 func get_unit(pos: Vector2) -> Node2D:
 	return _grid_to_unit[pos.x][pos.y]

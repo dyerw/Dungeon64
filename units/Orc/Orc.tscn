@@ -99,8 +99,8 @@ animations = [ {
 } ]
 
 [node name="BaseUnitNode2D" instance=ExtResource( 1 )]
+movement = 1
 
 [node name="AnimatedSprite" parent="." index="0"]
 frames = SubResource( 21 )
-frame = 13
 playing = true

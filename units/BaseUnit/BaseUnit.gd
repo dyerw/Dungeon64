@@ -7,5 +7,17 @@ var remaining_movement: int
 func _ready():
 	remaining_movement = movement
 
-func move(pos: Vector2):
+func move(to: Vector2):
 	$AnimatedSprite.animation = "move"
+	$MovementTween.interpolate_property(
+		self, 
+		"position",
+		position, 
+		to, 
+		1,
+		Tween.TRANS_LINEAR, 
+		Tween.EASE_IN_OUT
+	)
+	$MovementTween.start()
+	yield($MovementTween, "tween_completed")
+	$AnimatedSprite.animation = "default"
