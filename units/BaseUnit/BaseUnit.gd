@@ -3,20 +3,38 @@ extends Node2D
 export(int) var movement
 export(bool) var allied
 export(int) var max_health
+export(int) var attack_range
+export(int) var damage
 
 var remaining_movement: int
-var current_health: int
+var current_health: int setget set_current_health
 
 signal move_complete
+signal attack_complete
+signal died
+
+func set_current_health(h: int):
+	current_health = h
+	$HealthPips.health = h
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	remaining_movement = movement
-	current_health = max_health
-	$HealthPips.health = current_health
+	set_current_health(max_health)
 
 func can_move(from: Vector2, to: Vector2):
 	return from.distance_to(to) <= remaining_movement
+
+func take_damage(d: int):
+	# Did we die???
+	if d >= current_health:
+		set_current_health(0)
+		$AnimatedSprite.animation = "die"
+		emit_signal("died", self)
+		yield($AnimatedSprite, "animation_finished")
+		self.queue_free()
+	else:
+		set_current_health(current_health - d)
 
 func move(to: Vector2, cost: int):
 	remaining_movement -= cost
@@ -34,6 +52,12 @@ func move(to: Vector2, cost: int):
 	yield($MovementTween, "tween_completed")
 	$AnimatedSprite.animation = "default"
 	emit_signal("move_complete")
+
+func attack():
+	$AnimatedSprite.animation = "attack"
+	yield($AnimatedSprite, "animation_finished")
+	$AnimatedSprite.animation = "default"
+	emit_signal("attack_complete")
 
 func end_turn():
 	print(self, "ending turn")
