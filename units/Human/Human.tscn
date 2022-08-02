@@ -122,6 +122,7 @@ animations = [ {
 
 [node name="BaseUnitNode2D" instance=ExtResource( 1 )]
 movement = 2
+attacks = 1
 allied = true
 max_health = 3
 attack_range = 1
