@@ -7,7 +7,8 @@ var remaining_movement: int
 func _ready():
 	remaining_movement = movement
 
-func move(to: Vector2):
+func move(to: Vector2, cost: int):
+	remaining_movement -= cost
 	$AnimatedSprite.animation = "move"
 	$MovementTween.interpolate_property(
 		self, 

@@ -33,22 +33,15 @@ func update_grid(entity: Node2D, pos: Vector2):
 
 func move_unit(entity: Node2D, pos: Vector2):
 	update_grid(entity, pos)
-	entity.move($TerrainTileMap.map_to_world(pos))
+	entity.move($TerrainTileMap.map_to_world(pos), pos.distance_to($TerrainTileMap.world_to_map(entity.position)))
 
 func get_unit(pos: Vector2) -> Node2D:
 	return _grid_to_unit[pos.x][pos.y]
 
 func select_unit(unit: Node2D):
 	selected = unit
-	
 	var unit_grid_pos = $TerrainTileMap.world_to_map(unit.position)
-	var accessible_tiles = PoolVector2Array()
-	for x in range(8):
-		for y in range(8):
-			var v = Vector2(x, y)
-			if v.distance_to(unit_grid_pos) <= unit.movement:
-				accessible_tiles.push_back(v)
-	$UIOverlayTileMap.highlight_tiles(accessible_tiles)
+	$UIOverlayTileMap.highlight_range(unit_grid_pos, unit.remaining_movement)
 
 func _on_TileMap_tile_left_clicked(pos: Vector2):
 	var u = get_unit(pos)
