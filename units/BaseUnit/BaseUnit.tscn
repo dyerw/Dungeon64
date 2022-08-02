@@ -1,8 +1,9 @@
-[gd_scene load_steps=25 format=2]
+[gd_scene load_steps=26 format=2]
 
 [ext_resource path="res://units/BaseUnit/BaseUnit.gd" type="Script" id=1]
 [ext_resource path="res://images/Minifantasy_CreaturesHumanBaseWalk.png" type="Texture" id=2]
 [ext_resource path="res://images/Minifantasy_CreaturesHumanBaseIdle.png" type="Texture" id=3]
+[ext_resource path="res://units/BaseUnit/HealthPips.gd" type="Script" id=4]
 
 [sub_resource type="AtlasTexture" id=1]
 atlas = ExtResource( 3 )
@@ -106,3 +107,6 @@ frames = SubResource( 21 )
 offset = Vector2( 5, 3 )
 
 [node name="MovementTween" type="Tween" parent="."]
+
+[node name="HealthPips" type="Node2D" parent="."]
+script = ExtResource( 4 )
