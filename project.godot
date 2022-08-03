@@ -8,6 +8,16 @@
 
 config_version=4
 
+_global_script_classes=[ {
+"base": "Reference",
+"class": "Pathing",
+"language": "GDScript",
+"path": "res://util/Pathing.gd"
+} ]
+_global_script_class_icons={
+"Pathing": ""
+}
+
 [application]
 
 config/name="Temple64"

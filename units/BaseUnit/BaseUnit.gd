@@ -7,6 +7,7 @@ export(int) var max_health
 export(int) var attack_range
 export(int) var damage
 
+var pathing = Pathing.new()
 var remaining_movement: int
 var remaining_attacks: int
 var current_health: int setget set_current_health
@@ -24,9 +25,6 @@ func _ready():
 	remaining_movement = movement
 	remaining_attacks = attacks
 	set_current_health(max_health)
-
-func can_move(from: Vector2, to: Vector2):
-	return from.distance_to(to) <= remaining_movement
 
 func take_damage(d: int):
 	# Did we die???
