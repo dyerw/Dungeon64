@@ -13,9 +13,21 @@ _global_script_classes=[ {
 "class": "Pathing",
 "language": "GDScript",
 "path": "res://util/Pathing.gd"
+}, {
+"base": "Node",
+"class": "ScreenLock",
+"language": "GDScript",
+"path": "res://util/ScreenLock.gd"
+}, {
+"base": "Reference",
+"class": "UUID",
+"language": "GDScript",
+"path": "res://util/UUID.gd"
 } ]
 _global_script_class_icons={
-"Pathing": ""
+"Pathing": "",
+"ScreenLock": "",
+"UUID": ""
 }
 
 [application]

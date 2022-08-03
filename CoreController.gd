@@ -10,7 +10,7 @@ var _grid_to_blocked = []
 var selected = null
 
 var _locked = false
-var _locking_units = []
+var _lock_ids = []
 
 func _initialize_grid(grid):
 	grid.resize(8)
@@ -52,6 +52,9 @@ func _ready():
 	o4.position = $TerrainTileMap.map_to_world(Vector2(4,4))
 	
 	_all_units.push_back(o)
+	_all_units.push_back(o2)
+	_all_units.push_back(o3)
+	_all_units.push_back(o4)
 
 	_all_units.push_back(h)
 	
@@ -64,18 +67,15 @@ func _on_Unit_died(unit: Node2D):
 	_all_units.remove(_all_units.find(unit))
 	clear_unit_from_grid(unit)
 
-func _on_Unit_request_lock(unit: Node2D):
-	print(unit, " requesting lock")
+func _on_Unit_request_lock(id):
 	_locked = true
-	if !_locking_units.has(unit):
-		_locking_units.push_back(unit)
+	if !_lock_ids.has(id):
+		_lock_ids.push_back(id)
 
-func _on_Unit_release_lock(unit: Node2D):
-	print(unit, " releasing lock")
-	if _locking_units.has(unit):
-		_locking_units.remove(_locking_units.find(unit))
-		if _locking_units.size() == 0:
-			print("no units locking, unlocking")
+func _on_Unit_release_lock(id):
+	if _lock_ids.has(id):
+		_lock_ids.remove(_lock_ids.find(id))
+		if _lock_ids.size() == 0:
 			_locked = false
 
 func clear_unit_from_grid(unit: Node2D):
@@ -138,7 +138,7 @@ func highlight_moveable(unit: Node2D):
 func resolve_attack(attacker: Node2D, defender: Node2D):
 	if distance_between_units(attacker, defender) <= attacker.attack_range and attacker.remaining_attacks > 0:
 		attacker.attack()
-		var died = defender.take_damage(attacker.damage)
+		defender.take_damage(attacker.damage)
 
 func can_move(unit: Node2D, to: Vector2):
 	return pathing.is_reachable(

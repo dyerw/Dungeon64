@@ -31,18 +31,21 @@ func _ready():
 func take_damage(d: int):
 	# Did we die???
 	if d >= current_health:
-		emit_signal("request_lock", self)
+		var screen_lock = ScreenLock.new()
+		screen_lock.request(self)
 		set_current_health(0)
 		$AnimatedSprite.animation = "die"
 		yield($AnimatedSprite, "animation_finished")
 		emit_signal("died", self)
-		emit_signal("release_lock", self)
+		screen_lock.release(self)
+		
 		self.queue_free()
 	else:
 		set_current_health(current_health - d)
 
 func move(to: Vector2, cost: int):
-	emit_signal("request_lock", self)
+	var screen_lock = ScreenLock.new()
+	screen_lock.request(self)
 	remaining_movement -= cost
 	$AnimatedSprite.animation = "move"
 	$MovementTween.interpolate_property(
@@ -57,15 +60,16 @@ func move(to: Vector2, cost: int):
 	$MovementTween.start()
 	yield($MovementTween, "tween_completed")
 	$AnimatedSprite.animation = "default"
-	emit_signal("release_lock", self)
+	screen_lock.release(self)
 
 func attack():
-	emit_signal("request_lock", self)
+	var screen_lock = ScreenLock.new()
+	screen_lock.request(self)
 	remaining_attacks -= 1
 	$AnimatedSprite.animation = "attack"
 	yield($AnimatedSprite, "animation_finished")
 	$AnimatedSprite.animation = "default"
-	emit_signal("release_lock", self)
+	screen_lock.release(self)
 
 func end_turn():
 	remaining_attacks = attacks
