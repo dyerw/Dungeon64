@@ -9,7 +9,8 @@ var _all_units = []
 var _grid_to_blocked = []
 var selected = null
 
-var locked = false
+var _locked = false
+var _locking_units = []
 
 func _initialize_grid(grid):
 	grid.resize(8)
@@ -55,11 +56,27 @@ func _ready():
 	_all_units.push_back(h)
 	
 	for u in _all_units:
+		u.connect("request_lock", self, "_on_Unit_request_lock")
+		u.connect("release_lock", self, "_on_Unit_release_lock")
 		u.connect("died", self, "_on_Unit_died")
 
 func _on_Unit_died(unit: Node2D):
 	_all_units.remove(_all_units.find(unit))
 	clear_unit_from_grid(unit)
+
+func _on_Unit_request_lock(unit: Node2D):
+	print(unit, " requesting lock")
+	_locked = true
+	if !_locking_units.has(unit):
+		_locking_units.push_back(unit)
+
+func _on_Unit_release_lock(unit: Node2D):
+	print(unit, " releasing lock")
+	if _locking_units.has(unit):
+		_locking_units.remove(_locking_units.find(unit))
+		if _locking_units.size() == 0:
+			print("no units locking, unlocking")
+			_locked = false
 
 func clear_unit_from_grid(unit: Node2D):
 	var old_position = $TerrainTileMap.world_to_map(unit.position)
@@ -71,10 +88,7 @@ func update_grid(entity: Node2D, pos: Vector2):
 
 func move_unit(entity: Node2D, pos: Vector2):
 	update_grid(entity, pos)
-	locked = true
 	entity.move($TerrainTileMap.map_to_world(pos), pos.distance_to($TerrainTileMap.world_to_map(entity.position)))
-	yield(entity, "move_complete")
-	locked = false
 
 func get_unit(pos: Vector2) -> Node2D:
 	return _grid_to_unit[pos.x][pos.y]
@@ -122,12 +136,9 @@ func highlight_moveable(unit: Node2D):
 	$UIOverlayTileMap.highlight_tiles_moveable(tiles)
 
 func resolve_attack(attacker: Node2D, defender: Node2D):
-	if distance_between_units(attacker, defender) <= attacker.attack_range:
-		locked = true
+	if distance_between_units(attacker, defender) <= attacker.attack_range and attacker.remaining_attacks > 0:
 		attacker.attack()
-		defender.take_damage(attacker.damage)
-		yield(attacker, "attack_complete")
-		locked = false
+		var died = defender.take_damage(attacker.damage)
 
 func can_move(unit: Node2D, to: Vector2):
 	return pathing.is_reachable(
@@ -138,7 +149,7 @@ func can_move(unit: Node2D, to: Vector2):
 	)
 
 func _on_TileMap_tile_left_clicked(pos: Vector2):
-	if locked:
+	if _locked:
 		return
 	
 	if pos == Vector2(0,0):
@@ -149,7 +160,7 @@ func _on_TileMap_tile_left_clicked(pos: Vector2):
 		select_unit(u)
 
 func _on_TileMap_tile_right_clicked(pos: Vector2):
-	if locked:
+	if _locked:
 		return
 	
 	var u = get_unit(pos)
@@ -165,10 +176,10 @@ func _on_TileMap_tile_right_clicked(pos: Vector2):
 		selected = null
 
 func end_turn():
-	locked = true
+	_locked = true
 	$UIOverlayTileMap.clear()
 	selected = null
 	for u in _all_units:
 		if u.allied:
 			u.end_turn()
-	locked = false
+	_locked = false
