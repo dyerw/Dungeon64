@@ -13,6 +13,7 @@ var _locked = false
 var _lock_ids = []
 
 signal enemy_turn_complete
+signal lock_released
 
 func _initialize_grid(grid):
 	grid.resize(8)
@@ -79,6 +80,7 @@ func _on_Unit_release_lock(id):
 		_lock_ids.remove(_lock_ids.find(id))
 		if _lock_ids.size() == 0:
 			_locked = false
+			emit_signal("lock_released")
 
 func clear_unit_from_grid(unit: Node2D):
 	var old_position = $TerrainTileMap.world_to_map(unit.position)
@@ -148,10 +150,12 @@ func highlight_moveable(unit: Node2D):
 	)
 	$UIOverlayTileMap.highlight_tiles_moveable(tiles)
 
-func resolve_attack(attacker: Node2D, defender: Node2D):
+func resolve_attack(attacker: Node2D, defender: Node2D) -> bool:
 	if distance_between_units(attacker, defender) <= attacker.attack_range and attacker.remaining_attacks > 0:
 		attacker.attack()
 		defender.take_damage(attacker.damage)
+		return true
+	return false
 
 func can_move(unit: Node2D, to: Vector2):
 	return pathing.is_reachable(
@@ -189,6 +193,7 @@ func _on_TileMap_tile_right_clicked(pos: Vector2):
 		selected = null
 
 func take_turn_for(enemy: Node):
+	# find target
 	var target = null
 	for u in _all_units:
 		if u.allied:
@@ -199,6 +204,8 @@ func take_turn_for(enemy: Node):
 		return
 	var enemy_pos = $TerrainTileMap.world_to_map(enemy.position)
 	var target_pos = $TerrainTileMap.world_to_map(target.position)
+	
+	# move towards target
 	# TODO: break out into something called "move_toward"
 	var bgrid = get_blocking_grid()
 	bgrid[target_pos.x][target_pos.y] = false
@@ -208,9 +215,15 @@ func take_turn_for(enemy: Node):
 		bgrid
 	)
 	if path_to_player.size() >= 3:
-		move_unit(enemy, path_to_player[path_to_player.size() - 2])
+		var move_to_index = min(path_to_player.size() - 2, enemy.remaining_movement)
+		move_unit(enemy, path_to_player[move_to_index])
 		yield(enemy, "movement_complete")
-		emit_signal("enemy_turn_complete")
+	
+	# try to attack
+	var attacked = resolve_attack(enemy, target)
+	if attacked:
+		yield(self, "lock_released")
+	emit_signal("enemy_turn_complete")
 
 func end_turn():
 	_locked = true
