@@ -79,6 +79,13 @@ func move_unit(entity: Node2D, pos: Vector2):
 func get_unit(pos: Vector2) -> Node2D:
 	return _grid_to_unit[pos.x][pos.y]
 
+func get_blocking_grid() -> Array:
+	var a = _grid_to_blocked.duplicate(true)
+	for x in range(8):
+		for y in range(8):
+			a[x][y] = a[x][y] or _grid_to_unit[x][y] != null
+	return a
+
 func select_unit(unit: Node2D):
 	if unit.allied:
 		selected = unit
@@ -107,13 +114,12 @@ func highlight_attackable(unit: Node2D):
 	$UIOverlayTileMap.highlight_tiles_attackable(get_attackable_tiles(unit))
 
 func highlight_moveable(unit: Node2D):
-	var reachable = pathing.get_reachable_positions(
+	var tiles = pathing.get_reachable_positions(
 		$TerrainTileMap.world_to_map(unit.position),
 		unit.remaining_movement,
-		_grid_to_blocked,
-		_grid_to_unit
+		get_blocking_grid()
 	)
-	$UIOverlayTileMap.highlight_tiles_moveable(reachable)
+	$UIOverlayTileMap.highlight_tiles_moveable(tiles)
 
 func resolve_attack(attacker: Node2D, defender: Node2D):
 	if distance_between_units(attacker, defender) <= attacker.attack_range:
@@ -124,7 +130,12 @@ func resolve_attack(attacker: Node2D, defender: Node2D):
 		locked = false
 
 func can_move(unit: Node2D, to: Vector2):
-	return pathing.is_reachable($TerrainTileMap.world_to_map(unit.position), to, unit.remaining_movement, _grid_to_blocked, _grid_to_unit)
+	return pathing.is_reachable(
+		$TerrainTileMap.world_to_map(unit.position), 
+		to, 
+		unit.remaining_movement, 
+		get_blocking_grid()
+	)
 
 func _on_TileMap_tile_left_clicked(pos: Vector2):
 	if locked:
