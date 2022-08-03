@@ -17,6 +17,8 @@ var current_health: int setget set_current_health
 signal request_lock
 signal release_lock
 signal died
+signal movement_complete
+signal attack_complete
 
 func set_current_health(h: int):
 	current_health = h
@@ -43,24 +45,26 @@ func take_damage(d: int):
 	else:
 		set_current_health(current_health - d)
 
-func move(to: Vector2, cost: int):
+func move(path: PoolVector2Array):
 	var screen_lock = ScreenLock.new()
 	screen_lock.request(self)
-	remaining_movement -= cost
+	remaining_movement -= path.size()
 	$AnimatedSprite.animation = "move"
-	$MovementTween.interpolate_property(
-		self, 
-		"position",
-		position, 
-		to, 
-		1,
-		Tween.TRANS_LINEAR, 
-		Tween.EASE_IN_OUT
-	)
-	$MovementTween.start()
-	yield($MovementTween, "tween_completed")
+	for i in path.size() - 1:
+		$MovementTween.interpolate_property(
+			self, 
+			"position",
+			path[i], 
+			path[i+1],
+			1,
+			Tween.TRANS_LINEAR, 
+			Tween.EASE_IN_OUT
+		)
+		$MovementTween.start()
+		yield($MovementTween, "tween_completed")
 	$AnimatedSprite.animation = "default"
 	screen_lock.release(self)
+	emit_signal("movement_complete")
 
 func attack():
 	var screen_lock = ScreenLock.new()
@@ -70,6 +74,7 @@ func attack():
 	yield($AnimatedSprite, "animation_finished")
 	$AnimatedSprite.animation = "default"
 	screen_lock.release(self)
+	emit_signal("attack_complete")
 
 func end_turn():
 	remaining_attacks = attacks

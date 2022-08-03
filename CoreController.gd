@@ -12,6 +12,8 @@ var selected = null
 var _locked = false
 var _lock_ids = []
 
+signal enemy_turn_complete
+
 func _initialize_grid(grid):
 	grid.resize(8)
 	for i in grid.size():
@@ -87,8 +89,17 @@ func update_grid(entity: Node2D, pos: Vector2):
 	_grid_to_unit[pos.x][pos.y] = entity
 
 func move_unit(entity: Node2D, pos: Vector2):
+	var entity_map_pos = $TerrainTileMap.world_to_map(entity.position)
+	var path = pathing.get_shortest_path(
+		entity_map_pos,
+		pos,
+		get_blocking_grid()
+	)
+	var world_path = PoolVector2Array()
+	for p in path:
+		world_path.push_back($TerrainTileMap.map_to_world(p))
+	entity.move(world_path)
 	update_grid(entity, pos)
-	entity.move($TerrainTileMap.map_to_world(pos), pos.distance_to($TerrainTileMap.world_to_map(entity.position)))
 
 func get_unit(pos: Vector2) -> Node2D:
 	return _grid_to_unit[pos.x][pos.y]
@@ -116,6 +127,8 @@ func distance_between_units(u1: Node2D, u2: Node2D):
 
 func get_attackable_tiles(unit: Node2D) -> PoolVector2Array:
 	var tiles = PoolVector2Array()
+	if unit.remaining_attacks <= 0:
+		return tiles
 	for x in range(8):
 		for y in range(8):
 			var v = Vector2(x, y)
@@ -175,11 +188,39 @@ func _on_TileMap_tile_right_clicked(pos: Vector2):
 		resolve_attack(selected, u)
 		selected = null
 
+func take_turn_for(enemy: Node):
+	var target = null
+	for u in _all_units:
+		if u.allied:
+			target = u
+	# The player has lost :(
+	# FIXME: handle this
+	if target == null:
+		return
+	var enemy_pos = $TerrainTileMap.world_to_map(enemy.position)
+	var target_pos = $TerrainTileMap.world_to_map(target.position)
+	# TODO: break out into something called "move_toward"
+	var bgrid = get_blocking_grid()
+	bgrid[target_pos.x][target_pos.y] = false
+	var path_to_player = pathing.get_shortest_path(
+		enemy_pos, 
+		target_pos, 
+		bgrid
+	)
+	if path_to_player.size() >= 3:
+		move_unit(enemy, path_to_player[path_to_player.size() - 2])
+		yield(enemy, "movement_complete")
+		emit_signal("enemy_turn_complete")
+
 func end_turn():
 	_locked = true
 	$UIOverlayTileMap.clear()
 	selected = null
 	for u in _all_units:
-		if u.allied:
-			u.end_turn()
+		if !u.allied:
+			var fn_state = take_turn_for(u)
+			if fn_state != null:
+				yield(self, "enemy_turn_complete")
+	for u in _all_units:
+		u.end_turn()
 	_locked = false

@@ -160,5 +160,5 @@ max_health = 2
 
 [node name="AnimatedSprite" parent="." index="0"]
 frames = SubResource( 21 )
-frame = 12
+frame = 14
 playing = true
