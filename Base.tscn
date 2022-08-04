@@ -1,4 +1,4 @@
-[gd_scene load_steps=14 format=2]
+[gd_scene load_steps=15 format=2]
 
 [ext_resource path="res://images/Minifantasy_DungeonFloorTiles.png" type="Texture" id=1]
 [ext_resource path="res://images/Minifantasy_DungeonWallTiles.png" type="Texture" id=2]
@@ -11,6 +11,7 @@
 [ext_resource path="res://UIOverlayTileMap.gd" type="Script" id=9]
 [ext_resource path="res://images/check.png" type="Texture" id=10]
 [ext_resource path="res://images/attackable.png" type="Texture" id=11]
+[ext_resource path="res://units/Archer/Archer.tscn" type="PackedScene" id=12]
 
 [sub_resource type="TileSet" id=25]
 0/name = "Minifantasy_DungeonFloorTiles.png 0"
@@ -125,6 +126,7 @@
 script = ExtResource( 5 )
 human = ExtResource( 6 )
 orc = ExtResource( 7 )
+archer = ExtResource( 12 )
 
 [node name="TerrainTileMap" type="TileMap" parent="."]
 tile_set = SubResource( 25 )

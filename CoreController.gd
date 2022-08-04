@@ -2,6 +2,7 @@ extends Node2D
 
 export var human: PackedScene
 export var orc: PackedScene
+export var archer: PackedScene
 
 var pathing = Pathing.new()
 var _grid_to_unit = []
@@ -54,12 +55,18 @@ func _ready():
 	o3.position = $TerrainTileMap.map_to_world(Vector2(2,4))
 	o4.position = $TerrainTileMap.map_to_world(Vector2(4,4))
 	
+	var a = archer.instance()
+	add_child(a)
+	a.position = $TerrainTileMap.map_to_world(Vector2(2, 1))
+	update_grid(a, Vector2(2,1))
+	
 	_all_units.push_back(o)
 	_all_units.push_back(o2)
 	_all_units.push_back(o3)
 	_all_units.push_back(o4)
 
 	_all_units.push_back(h)
+	_all_units.push_back(a)
 	
 	for u in _all_units:
 		u.connect("request_lock", self, "_on_Unit_request_lock")

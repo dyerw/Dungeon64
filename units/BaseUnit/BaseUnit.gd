@@ -56,7 +56,7 @@ func move(path: PoolVector2Array):
 			"position",
 			path[i], 
 			path[i+1],
-			1,
+			0.5,
 			Tween.TRANS_LINEAR, 
 			Tween.EASE_IN_OUT
 		)
