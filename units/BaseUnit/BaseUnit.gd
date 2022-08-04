@@ -2,7 +2,6 @@ extends Node2D
 
 export(int) var movement
 export(int) var attacks
-export(bool) var allied
 export(int) var max_health
 export(int) var attack_range
 export(int) var damage
@@ -48,7 +47,7 @@ func take_damage(d: int):
 func move(path: PoolVector2Array):
 	var screen_lock = ScreenLock.new()
 	screen_lock.request(self)
-	remaining_movement -= path.size()
+	remaining_movement -= path.size() - 1
 	$AnimatedSprite.animation = "move"
 	for i in path.size() - 1:
 		$MovementTween.interpolate_property(
@@ -56,7 +55,7 @@ func move(path: PoolVector2Array):
 			"position",
 			path[i], 
 			path[i+1],
-			1,
+			0.5,
 			Tween.TRANS_LINEAR, 
 			Tween.EASE_IN_OUT
 		)

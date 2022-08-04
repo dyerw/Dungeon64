@@ -184,5 +184,5 @@ damage = 1
 
 [node name="AnimatedSprite" parent="." index="0"]
 frames = SubResource( 21 )
-frame = 9
+frame = 4
 playing = true
