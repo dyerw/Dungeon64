@@ -33,7 +33,7 @@ _global_script_class_icons={
 [application]
 
 config/name="Temple64"
-run/main_scene="res://Base.tscn"
+run/main_scene="res://screens/dungeon/Dungeon.tscn"
 config/icon="res://icon.png"
 
 [display]
