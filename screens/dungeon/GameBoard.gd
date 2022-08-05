@@ -132,6 +132,13 @@ func can_move(unit: Node2D, to: Vector2):
 		get_blocked_tiles([])
 	)
 
+func get_shortest_path(unit: Node2D, to: Vector2):
+	return pathing.get_shortest_path(
+		get_unit_grid_pos(unit), 
+		to, 
+		get_blocked_tiles([])
+	)
+
 func is_enemy_unit(unit: Node2D) -> bool:
 	return unit in _enemy_units
 

@@ -7,10 +7,20 @@ var _lock_ids = []
 var _selected = null
 var _game_board
 
+var _hovered_tile = null
+
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	pass # Replace with function body.
+	pass # Replace with function body
+
+func _input(event):
+	var mouse_motion = event as InputEventMouseMotion
+	if mouse_motion:
+		var tile = $UIOverlayTileMap.world_to_map(mouse_motion.position)
+		if tile != _hovered_tile:
+			_hovered_tile = tile
+			_on_mouse_entered_tile(tile)
 
 # Public
 func initialize(game_board):
@@ -43,6 +53,7 @@ func empty_tile_right_clicked(pos: Vector2):
 		return
 	var moved = _game_board.move_unit(_selected, pos)
 	if moved:
+		$ArrowOverlayTileMap.clear()
 		_set_selected(null)
 
 func empty_tile_left_clicked(pos: Vector2):
@@ -75,6 +86,14 @@ func _highlight_moveable(unit: Node2D):
 	$UIOverlayTileMap.highlight_tiles_moveable(
 		_game_board.get_reachable_positions(unit)
 	)
+
+func _on_mouse_entered_tile(tile: Vector2):
+	if _selected != null and _selected.remaining_movement > 0:
+		var path = _game_board.get_shortest_path(_selected, tile)
+		if path.size() - 1 <= _selected.remaining_movement:
+			$ArrowOverlayTileMap.draw_path(path)
+		else:
+			$ArrowOverlayTileMap.draw_path([])
 
 # Signal Handlers
 
