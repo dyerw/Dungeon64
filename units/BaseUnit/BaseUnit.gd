@@ -5,11 +5,13 @@ export(int) var attacks
 export(int) var max_health
 export(int) var attack_range
 export(int) var damage
+export(String) var unit_name
 
 var pathing = Pathing.new()
 var remaining_movement: int
 var remaining_attacks: int
 var current_health: int setget set_current_health
+var is_moving
 
 # While units do things that should disable controls
 # they can request and release controls
@@ -45,6 +47,7 @@ func take_damage(d: int):
 		set_current_health(current_health - d)
 
 func move(path: PoolVector2Array):
+	is_moving = true
 	var screen_lock = ScreenLock.new()
 	screen_lock.request(self)
 	remaining_movement -= path.size() - 1
@@ -63,6 +66,7 @@ func move(path: PoolVector2Array):
 		yield($MovementTween, "tween_completed")
 	$AnimatedSprite.animation = "default"
 	screen_lock.release(self)
+	is_moving = false
 	emit_signal("movement_complete")
 
 func attack():
@@ -75,6 +79,7 @@ func attack():
 	screen_lock.release(self)
 	emit_signal("attack_complete")
 
+# FIXME: Maybe name reset??
 func end_turn():
 	remaining_attacks = attacks
 	remaining_movement = movement

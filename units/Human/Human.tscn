@@ -174,15 +174,14 @@ animations = [ {
 "speed": 5.0
 } ]
 
-[node name="BaseUnitNode2D" instance=ExtResource( 1 )]
+[node name="BaseUnitNode2D2" instance=ExtResource( 1 )]
 movement = 4
 attacks = 1
-allied = true
 max_health = 3
 attack_range = 1
 damage = 1
+unit_name = "Human"
 
 [node name="AnimatedSprite" parent="." index="0"]
 frames = SubResource( 21 )
-frame = 4
 playing = true

@@ -3,9 +3,6 @@ extends Node2D
 var pathing = Pathing.new()
 var selected = null
 
-signal enemy_turn_complete
-signal lock_released
-
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	$GameBoard.initialize($UIManager)

@@ -53,6 +53,7 @@ func empty_tile_left_clicked(pos: Vector2):
 func end_turn_clicked():
 	if _locked:
 		return
+	_set_selected(null)
 	_game_board.end_turn()
 	pass
 
@@ -77,14 +78,15 @@ func _highlight_moveable(unit: Node2D):
 
 # Signal Handlers
 
-func _on_Unit_request_lock(id):
+func _on_request_lock(id):
+	print("locking")
 	_locked = true
 	if !_lock_ids.has(id):
 		_lock_ids.push_back(id)
 
-func _on_Unit_release_lock(id):
+func _on_release_lock(id):
 	if _lock_ids.has(id):
 		_lock_ids.remove(_lock_ids.find(id))
 		if _lock_ids.size() == 0:
+			print("unlocking")
 			_locked = false
-			emit_signal("lock_released")

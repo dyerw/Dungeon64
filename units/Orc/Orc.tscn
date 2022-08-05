@@ -182,8 +182,9 @@ attacks = 1
 max_health = 2
 attack_range = 1
 damage = 1
+unit_name = "Orc"
 
 [node name="AnimatedSprite" parent="." index="0"]
 frames = SubResource( 21 )
-frame = 13
+frame = 2
 playing = true

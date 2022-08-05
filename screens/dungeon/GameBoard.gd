@@ -11,6 +11,8 @@ export var human: PackedScene
 export var orc: PackedScene
 export var archer: PackedScene
 
+var default_enemy_behavior = DefaultEnemyBehavior.new()
+
 enum UnitType {
 	HUMAN,
 	ORC,
@@ -23,6 +25,8 @@ func _ready():
 
 func initialize(input_handler):
 	_input_handler = input_handler
+	default_enemy_behavior.connect("request_lock", input_handler, "_on_request_lock")
+	default_enemy_behavior.connect("release_lock", input_handler, "_on_release_lock")
 
 func add_unit(type, grid_pos: Vector2, is_player: bool):
 	var u
@@ -41,8 +45,8 @@ func add_unit(type, grid_pos: Vector2, is_player: bool):
 	else:
 		_enemy_units.push_back(u)
 	u.connect("died", self, "_on_Unit_died")
-	u.connect("request_lock", _input_handler, "_on_Unit_request_lock")
-	u.connect("release_lock", _input_handler, "_on_Unit_release_lock")
+	u.connect("request_lock", _input_handler, "_on_request_lock")
+	u.connect("release_lock", _input_handler, "_on_release_lock")
 
 func get_unit_grid_pos(unit: Node2D):
 	return $TerrainTileMap.world_to_map(unit.position)
@@ -54,7 +58,7 @@ func move_unit(unit: Node2D, grid_pos: Vector2) -> bool:
 	var path = pathing.get_shortest_path(
 		unit_grid_pos,
 		grid_pos,
-		get_blocked_tiles()
+		get_blocked_tiles([])
 	)
 	if path.size() - 1 > unit.remaining_movement:
 		return false
@@ -65,14 +69,19 @@ func move_unit(unit: Node2D, grid_pos: Vector2) -> bool:
 	_update_grid_to_unit(unit, grid_pos)
 	return true
 
-func get_blocked_tiles() -> PoolVector2Array:
+# Exceptions will be not included in the blocked tiles
+# this is useful sometimes for pathing to units
+# FIXME: exceptions doesn't remove terrain blockers
+func get_blocked_tiles(exceptions) -> PoolVector2Array:
 	var blocked_tiles = $TerrainTileMap.get_blocking_tiles()
 	for u in _player_units:
 		var u_grid_pos = get_unit_grid_pos(u)
-		blocked_tiles.push_back(Vector2(u_grid_pos.x, u_grid_pos.y))
+		if !u_grid_pos in exceptions:
+			blocked_tiles.push_back(Vector2(u_grid_pos.x, u_grid_pos.y))
 	for u in _enemy_units:
 		var u_grid_pos = get_unit_grid_pos(u)
-		blocked_tiles.push_back(Vector2(u_grid_pos.x, u_grid_pos.y))
+		if !u_grid_pos in exceptions:
+			blocked_tiles.push_back(Vector2(u_grid_pos.x, u_grid_pos.y))
 	return blocked_tiles
 
 # Returns null if no unit
@@ -91,7 +100,7 @@ func get_reachable_positions(unit: Node2D) -> PoolVector2Array:
 	var tiles = pathing.get_reachable_positions(
 		$TerrainTileMap.world_to_map(unit.position),
 		unit.remaining_movement,
-		get_blocked_tiles()
+		get_blocked_tiles([])
 	)
 	return tiles
 
@@ -120,7 +129,7 @@ func can_move(unit: Node2D, to: Vector2):
 		$TerrainTileMap.world_to_map(unit.position), 
 		to, 
 		unit.remaining_movement, 
-		get_blocked_tiles()
+		get_blocked_tiles([])
 	)
 
 func is_enemy_unit(unit: Node2D) -> bool:
@@ -132,8 +141,7 @@ func is_player_unit(unit: Node2D) -> bool:
 func move_toward_unit(u1: Node2D, u2: Node2D):
 	var u1_grid_pos = get_unit_grid_pos(u1)
 	var u2_grid_pos = get_unit_grid_pos(u2)
-	var blocked_tiles = get_blocked_tiles()
-	blocked_tiles.remove(blocked_tiles.find(u2_grid_pos))
+	var blocked_tiles = get_blocked_tiles([u2_grid_pos])
 	var path_to_target = pathing.get_shortest_path(
 		u1_grid_pos, 
 		u2_grid_pos, 
@@ -143,7 +151,35 @@ func move_toward_unit(u1: Node2D, u2: Node2D):
 		var move_to_index = min(path_to_target.size() - 2, u1.remaining_movement)
 		move_unit(u1, path_to_target[move_to_index])
 
+# Get the closest unit to the given one, will find closest player unit
+# if is_player is true or closest enemy if false
+func get_closest_unit(from: Node2D, is_player: bool) -> Node2D:
+	var units
+	if is_player:
+		units = _player_units
+	else:
+		units = _enemy_units
+	var min_dist = 99
+	var closest = null
+	for u in units:
+		# FIXME: If unit is inaccessible is this 0?
+		var u_grid_pos = get_unit_grid_pos(u)
+		var dist = pathing.get_shortest_path(
+			get_unit_grid_pos(from),
+			u_grid_pos,
+			get_blocked_tiles([u_grid_pos])
+		).size()
+		if dist < min_dist:
+			closest = u
+			min_dist = dist
+	return closest
+
 func end_turn():
+	for u in _enemy_units:
+		u.end_turn()
+		var co = default_enemy_behavior.take_turn(u, self)
+		if co is GDScriptFunctionState:
+			yield(default_enemy_behavior, "turn_completed")
 	for u in _player_units:
 		u.end_turn()
 

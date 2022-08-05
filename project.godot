@@ -9,6 +9,11 @@
 config_version=4
 
 _global_script_classes=[ {
+"base": "Node",
+"class": "DefaultEnemyBehavior",
+"language": "GDScript",
+"path": "res://screens/dungeon/ai/DefaultEnemyBehavior.gd"
+}, {
 "base": "Reference",
 "class": "Pathing",
 "language": "GDScript",
@@ -25,6 +30,7 @@ _global_script_classes=[ {
 "path": "res://util/UUID.gd"
 } ]
 _global_script_class_icons={
+"DefaultEnemyBehavior": "",
 "Pathing": "",
 "ScreenLock": "",
 "UUID": ""
