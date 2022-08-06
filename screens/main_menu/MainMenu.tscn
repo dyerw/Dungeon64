@@ -37,3 +37,5 @@ margin_bottom = 45.0
 texture_normal = ExtResource( 2 )
 texture_pressed = ExtResource( 5 )
 texture_hover = ExtResource( 4 )
+
+[connection signal="pressed" from="Panel/PlayButton" to="." method="_on_PlayButton_pressed"]
