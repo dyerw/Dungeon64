@@ -20,7 +20,7 @@ theme = ExtResource( 1 )
 position = Vector2( 34, 11 )
 scale = Vector2( 2, 2 )
 frames = ExtResource( 4 )
-frame = 5
+frame = 3
 playing = true
 
 [node name="BlockStatDisplay" parent="Panel" instance=ExtResource( 2 )]

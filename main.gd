@@ -3,6 +3,7 @@ extends Node
 var main_menu_screen = preload("res://screens/main_menu/MainMenu.tscn")
 var party_management_screen = preload("res://screens/party_management/PartyManagement.tscn")
 var dungeon_screen = preload("res://screens/dungeon/Dungeon.tscn")
+var reward_menu_scene = preload("res://screens/reward_menu/RewardMenu.tscn")
 
 var human = preload("res://units/Human/Human.tscn")
 var archer = preload("res://units/Archer/Archer.tscn")
@@ -20,6 +21,22 @@ func _ready():
 func _play_game():
 	print("play game!")
 	remove_child(get_child(0))
-	var scene = party_management_screen.instance()
+	var scene = reward_menu_scene.instance()
 	add_child(scene)
-	scene.initialize(_party)
+	scene.initialize([
+		{
+			"type": "boot", 
+			"rarity": "uncommon",
+			"stats": {
+				"movement": 1,
+				"attack_range": 2
+			}
+		},
+		{
+			"type": "sword", 
+			"rarity": "common",
+			"stats": {
+				"damage": 1
+			}
+		}
+	])
