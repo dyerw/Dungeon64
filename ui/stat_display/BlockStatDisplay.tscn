@@ -1,0 +1,30 @@
+[gd_scene load_steps=5 format=2]
+
+[ext_resource path="res://ui/stat_display/DamageStatDisplay.tscn" type="PackedScene" id=1]
+[ext_resource path="res://ui/stat_display/HealthStatDisplay.tscn" type="PackedScene" id=2]
+[ext_resource path="res://ui/stat_display/MovementStatDisplay.tscn" type="PackedScene" id=3]
+[ext_resource path="res://ui/stat_display/RangeStatDisplay.tscn" type="PackedScene" id=4]
+
+[node name="BlockStatDisplay" type="Control"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_right = -34.0
+margin_bottom = -46.0
+
+[node name="DamageStatDisplay" parent="." instance=ExtResource( 1 )]
+
+[node name="HealthStatDisplay" parent="." instance=ExtResource( 2 )]
+margin_left = 16.0
+margin_top = 10.0
+margin_right = -14.0
+margin_bottom = -8.0
+
+[node name="MovementStatDisplay" parent="." instance=ExtResource( 3 )]
+margin_left = 16.0
+margin_right = -14.0
+margin_bottom = -18.0
+
+[node name="RangeStatDisplay" parent="." instance=ExtResource( 4 )]
+margin_top = 10.0
+margin_right = -30.0
+margin_bottom = -8.0

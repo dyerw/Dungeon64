@@ -98,7 +98,6 @@ func _on_mouse_entered_tile(tile: Vector2):
 # Signal Handlers
 
 func _on_request_lock(id):
-	print("locking")
 	_locked = true
 	if !_lock_ids.has(id):
 		_lock_ids.push_back(id)
@@ -107,5 +106,4 @@ func _on_release_lock(id):
 	if _lock_ids.has(id):
 		_lock_ids.remove(_lock_ids.find(id))
 		if _lock_ids.size() == 0:
-			print("unlocking")
 			_locked = false

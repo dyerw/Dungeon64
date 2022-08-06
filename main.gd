@@ -10,4 +10,6 @@ func _ready():
 	add_child(mm)
 
 func _play_game():
-	print("PPLAY!@@")
+	remove_child(get_child(0))
+	var d = dungeon.instance()
+	add_child(d)
