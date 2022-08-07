@@ -18,6 +18,8 @@ onready var stat_display = get_node("%BlockStatDisplay")
 onready var held_item_slot = get_node("%HeldItemSlot")
 onready var ground_item_slot = get_node("%GroundItemSlot")
 
+signal party_management_completed
+
 var _selected_tab = null
 
 var type_to_frames = {
@@ -82,3 +84,7 @@ func _on_ItemSwapButton_pressed():
 	held_item_slot.set_item(unit.equipped_item)
 	ground_item_slot.set_item(_ground_item)
 	stat_display.display_unit(unit)
+
+
+func _on_EnterDungeonButton_pressed():
+	emit_signal("party_management_completed")

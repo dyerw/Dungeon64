@@ -20,6 +20,11 @@ _global_script_classes=[ {
 "path": "res://addons/godot-git-plugin/git_api.gdns"
 }, {
 "base": "Reference",
+"class": "LevelGenerator",
+"language": "GDScript",
+"path": "res://util/LevelGenerator.gd"
+}, {
+"base": "Reference",
 "class": "Pathing",
 "language": "GDScript",
 "path": "res://util/Pathing.gd"
@@ -37,6 +42,7 @@ _global_script_classes=[ {
 _global_script_class_icons={
 "DefaultEnemyBehavior": "",
 "GitAPI": "",
+"LevelGenerator": "",
 "Pathing": "",
 "ScreenLock": "",
 "UUID": ""

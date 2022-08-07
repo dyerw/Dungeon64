@@ -23,6 +23,36 @@ signal died
 signal movement_complete
 signal attack_complete
 
+func get_movement():
+	return get_modified_stats()["movement"]
+
+func get_attacks():
+	return get_modified_stats()["attacks"]
+
+func get_max_health():
+	return get_modified_stats()["max_health"]
+
+func get_attack_range():
+	return get_modified_stats()["attack_range"]
+
+func get_damage():
+	return get_modified_stats()["damage"]
+
+func get_base_movement():
+	return movement
+
+func get_base_attacks():
+	return attacks
+
+func get_base_max_health():
+	return max_health
+
+func get_base_attack_range():
+	return attack_range
+
+func get_base_damage():
+	return damage
+
 func set_current_health(h: int):
 	current_health = h
 	$HealthPips.health = h
@@ -44,7 +74,7 @@ func take_damage(d: int):
 		emit_signal("died", self)
 		screen_lock.release(self)
 		
-		self.queue_free()
+		self.visible = false
 	else:
 		set_current_health(current_health - d)
 
@@ -83,8 +113,9 @@ func attack():
 
 # FIXME: Maybe name reset??
 func end_turn():
-	remaining_attacks = attacks
-	remaining_movement = movement
+	var attacks = get_attacks()
+	remaining_attacks = get_attacks()
+	remaining_movement = get_movement()
 
 func get_modified_stats():
 	var stats = {
@@ -97,4 +128,6 @@ func get_modified_stats():
 	if equipped_item != null:
 		for stat in equipped_item.stats:
 			stats[stat] += equipped_item.stats[stat]
+	print(stats)
 	return stats
+

@@ -9,62 +9,53 @@ var human = preload("res://units/Human/Human.tscn")
 var archer = preload("res://units/Archer/Archer.tscn")
 
 var _party = []
+onready var _level_generator = LevelGenerator.new()
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	_party = [human.instance(), archer.instance()]
-	_party[0].equipped_item = {
-		"type": "sword", 
-		"rarity": "common",
-		"stats": {
-			"damage": 1
-		}
-	}
 	
 	var scene = main_menu_screen.instance()
-	scene.connect("play_button_pressed", self, "_switch_to_party_management")
-	#scene.connect("play_button_pressed", self, "_play_game")
+	scene.connect("play_button_pressed", self, "_play_game")
 	add_child(scene)
 
-func _switch_to_party_management():
+func _switch_to_party_management(ground_item):
 	remove_child(get_child(0))
 	var scene = party_management_screen.instance()
+	scene.connect("party_management_completed", self, "_on_PartyManagemend_completed")
 	add_child(scene)
 	scene.initialize(
 		_party,
-		{
-			"type": "boot", 
-			"rarity": "uncommon",
-			"stats": {
-				"movement": 1,
-				"attack_range": 2
-			}
-		}
+		ground_item
+	)
+
+func _switch_to_reward_menu():
+	remove_child(get_child(0))
+	var scene = reward_menu_screen.instance()
+	add_child(scene)
+	scene.connect("item_chosen", self, "_on_RewardMenu_item_chosen")
+	scene.initialize(
+		_level_generator.get_reward_items()
 	)
 
 func _play_game():
-	print("play game!")
-	remove_child(get_child(0))
-	var scene = reward_menu_screen.instance()
-	scene.connect("item_chosen", self, "_on_RewardMenu_item_chosen")
+	var last_scene = get_child(0)
+	remove_child(last_scene)
+	var scene = dungeon_screen.instance()
 	add_child(scene)
-	scene.initialize([
-		{
-			"type": "boot", 
-			"rarity": "uncommon",
-			"stats": {
-				"movement": 1,
-				"attack_range": 2
-			}
-		},
-		{
-			"type": "sword", 
-			"rarity": "common",
-			"stats": {
-				"damage": 1
-			}
-		}
-	])
+	for unit in _party:
+		var parent = unit.get_parent()
+		if parent != null:
+			parent.remove_child(unit)
+	scene.intialize(_party, _level_generator.get_enemies())
+	scene.connect("battle_completed", self, "_on_Dungeon_battle_completed")
 
 func _on_RewardMenu_item_chosen(item):
-	print(item)
+	_switch_to_party_management(item)
+
+func _on_Dungeon_battle_completed():
+	_switch_to_reward_menu()
+
+func _on_PartyManagemend_completed():
+	_level_generator.increase_depth()
+	_play_game()

@@ -7,10 +7,6 @@ var _enemy_units = []
 var _grid_to_unit = {}
 var _input_handler
 
-export var human: PackedScene
-export var orc: PackedScene
-export var archer: PackedScene
-
 var default_enemy_behavior = DefaultEnemyBehavior.new()
 
 enum UnitType {
@@ -18,6 +14,8 @@ enum UnitType {
 	ORC,
 	ARCHER
 }
+
+signal battle_completed
 
 func _ready():
 	pass # Replace with function body.
@@ -28,25 +26,18 @@ func initialize(input_handler):
 	default_enemy_behavior.connect("request_lock", input_handler, "_on_request_lock")
 	default_enemy_behavior.connect("release_lock", input_handler, "_on_release_lock")
 
-func add_unit(type, grid_pos: Vector2, is_player: bool):
-	var u
-	match type:
-		UnitType.HUMAN:
-			u = human.instance()
-		UnitType.ORC:
-			u = orc.instance()
-		UnitType.ARCHER:
-			u = archer.instance()
-	add_child(u)
-	u.position = $TerrainTileMap.map_to_world(grid_pos)
-	_update_grid_to_unit(u, grid_pos)
+func add_unit(unit, grid_pos: Vector2, is_player: bool):
+	print("adding ", unit)
+	add_child(unit)
+	unit.position = $TerrainTileMap.map_to_world(grid_pos)
+	_update_grid_to_unit(unit, grid_pos)
 	if is_player:
-		_player_units.push_back(u)
+		_player_units.push_back(unit)
 	else:
-		_enemy_units.push_back(u)
-	u.connect("died", self, "_on_Unit_died")
-	u.connect("request_lock", _input_handler, "_on_request_lock")
-	u.connect("release_lock", _input_handler, "_on_release_lock")
+		_enemy_units.push_back(unit)
+	unit.connect("died", self, "_on_Unit_died")
+	unit.connect("request_lock", _input_handler, "_on_request_lock")
+	unit.connect("release_lock", _input_handler, "_on_release_lock")
 
 func get_unit_grid_pos(unit: Node2D):
 	return $TerrainTileMap.world_to_map(unit.position)
@@ -113,14 +104,14 @@ func get_attackable_tiles(unit: Node2D) -> PoolVector2Array:
 			var v = Vector2(x, y)
 			var u = get_unit_by_grid_pos(v)
 			if u != null:
-				if distance_to_unit(v, unit) <= unit.attack_range and is_enemy_unit(u):
+				if distance_to_unit(v, unit) <= unit.get_attack_range() and is_enemy_unit(u):
 					tiles.push_back(v)
 	return tiles
 
 func resolve_attack(attacker: Node2D, defender: Node2D) -> bool:
-	if distance_between_units(attacker, defender) <= attacker.attack_range and attacker.remaining_attacks > 0:
+	if distance_between_units(attacker, defender) <= attacker.get_attack_range() and attacker.remaining_attacks > 0:
 		attacker.attack()
-		defender.take_damage(attacker.damage)
+		defender.take_damage(attacker.get_damage())
 		return true
 	return false
 
@@ -204,6 +195,8 @@ func _on_Unit_died(unit: Node2D):
 	_player_units.erase(unit)
 	_enemy_units.erase(unit)
 	_grid_to_unit.erase(get_unit_grid_pos(unit))
+	if _enemy_units.size() == 0:
+		emit_signal("battle_completed")
 
 func _on_TerrainTileMap_tile_left_clicked(pos: Vector2):
 	# FXIME: Button hack
