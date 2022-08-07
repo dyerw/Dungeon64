@@ -18,6 +18,6 @@ var item_to_texture = {
 	"sword": sword_texture
 }
 
-func set_item(rarity, type):
-	$RarityBackground.texture = rarity_to_texture[rarity]
-	$ItemImage.texture = item_to_texture[type]
+func set_item(item):
+	$RarityBackground.texture = rarity_to_texture[item["rarity"]]
+	$ItemImage.texture = item_to_texture[item["type"]]

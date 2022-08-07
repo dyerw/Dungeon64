@@ -1,16 +1,17 @@
-[gd_scene load_steps=13 format=2]
+[gd_scene load_steps=14 format=2]
 
 [ext_resource path="res://theme.tres" type="Theme" id=1]
 [ext_resource path="res://images/ui/screen_wide_button_selected.png" type="Texture" id=2]
 [ext_resource path="res://images/ui/check_button.png" type="Texture" id=3]
 [ext_resource path="res://fonts/alagard.ttf" type="DynamicFontData" id=4]
-[ext_resource path="res://ui/item_display/ItemDisplay.tscn" type="PackedScene" id=5]
+[ext_resource path="res://ui/item_stats_display/ItemStatsDisplay.tscn" type="PackedScene" id=5]
 [ext_resource path="res://images/ui/screen_wide_button.png" type="Texture" id=6]
 [ext_resource path="res://images/ui/screen_wide_button_pushed.png" type="Texture" id=7]
 [ext_resource path="res://images/ui/screen_wide_button_hover.png" type="Texture" id=8]
 [ext_resource path="res://screens/reward_menu/RewardMenu.gd" type="Script" id=9]
 [ext_resource path="res://images/ui/check_button_hover.png" type="Texture" id=10]
 [ext_resource path="res://images/ui/check_button_pressed.png" type="Texture" id=11]
+[ext_resource path="res://images/ui/check_button_disabled.png" type="Texture" id=12]
 
 [sub_resource type="DynamicFont" id=1]
 font_data = ExtResource( 4 )
@@ -43,12 +44,12 @@ texture_pressed = ExtResource( 7 )
 texture_hover = ExtResource( 8 )
 texture_disabled = ExtResource( 2 )
 
-[node name="ItemOneDisplay" parent="BackgroundPanel/ItemOneButton" instance=ExtResource( 5 )]
+[node name="ItemOneStatsDisplay" parent="BackgroundPanel/ItemOneButton" instance=ExtResource( 5 )]
 unique_name_in_owner = true
 margin_left = 2.0
 margin_top = 3.0
-margin_right = -52.0
-margin_bottom = -3.0
+margin_right = 2.0
+margin_bottom = 3.0
 mouse_filter = 1
 
 [node name="ItemTwoButton" type="TextureButton" parent="BackgroundPanel"]
@@ -61,22 +62,26 @@ texture_pressed = ExtResource( 7 )
 texture_hover = ExtResource( 8 )
 texture_disabled = ExtResource( 2 )
 
-[node name="ItemTwoDisplay" parent="BackgroundPanel/ItemTwoButton" instance=ExtResource( 5 )]
+[node name="ItemTwoStatsDisplay" parent="BackgroundPanel/ItemTwoButton" instance=ExtResource( 5 )]
 unique_name_in_owner = true
 margin_left = 2.0
 margin_top = 3.0
-margin_right = -52.0
-margin_bottom = -3.0
+margin_right = 2.0
+margin_bottom = 3.0
 mouse_filter = 1
 
 [node name="ContinueButton" type="TextureButton" parent="BackgroundPanel"]
+unique_name_in_owner = true
 margin_left = 15.0
 margin_top = 53.0
 margin_right = 47.0
 margin_bottom = 61.0
+disabled = true
 texture_normal = ExtResource( 3 )
 texture_pressed = ExtResource( 11 )
 texture_hover = ExtResource( 10 )
+texture_disabled = ExtResource( 12 )
 
 [connection signal="pressed" from="BackgroundPanel/ItemOneButton" to="." method="_on_ItemOneButton_pressed"]
 [connection signal="pressed" from="BackgroundPanel/ItemTwoButton" to="." method="_on_ItemTwoButton_pressed"]
+[connection signal="pressed" from="BackgroundPanel/ContinueButton" to="." method="_on_ContinueButton_pressed"]

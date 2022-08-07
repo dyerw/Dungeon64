@@ -1,4 +1,4 @@
-[gd_scene load_steps=8 format=2]
+[gd_scene load_steps=18 format=2]
 
 [ext_resource path="res://theme.tres" type="Theme" id=1]
 [ext_resource path="res://ui/stat_display/BlockStatDisplay.tscn" type="PackedScene" id=2]
@@ -7,6 +7,16 @@
 [ext_resource path="res://images/ui/right_arrow_button.png" type="Texture" id=5]
 [ext_resource path="res://images/ui/enter_dungeon_button.png" type="Texture" id=6]
 [ext_resource path="res://screens/party_management/PartyManagement.gd" type="Script" id=7]
+[ext_resource path="res://images/ui/stats_button_pressed.png" type="Texture" id=8]
+[ext_resource path="res://images/ui/stats_button_hover.png" type="Texture" id=9]
+[ext_resource path="res://images/ui/stats_button.png" type="Texture" id=10]
+[ext_resource path="res://images/ui/item_button.png" type="Texture" id=11]
+[ext_resource path="res://images/ui/item_button_hover.png" type="Texture" id=12]
+[ext_resource path="res://images/ui/item_button_pressed.png" type="Texture" id=13]
+[ext_resource path="res://ui/item_slot/ItemSlot.tscn" type="PackedScene" id=14]
+[ext_resource path="res://images/ui/swap_button.png" type="Texture" id=15]
+[ext_resource path="res://images/ui/swap_button_hover.png" type="Texture" id=16]
+[ext_resource path="res://images/ui/swap_button_pressed.png" type="Texture" id=17]
 
 [node name="PartyManagement" type="Control"]
 script = ExtResource( 7 )
@@ -17,38 +27,102 @@ margin_bottom = 64.0
 theme = ExtResource( 1 )
 
 [node name="UnitDisplay" type="AnimatedSprite" parent="Panel"]
-position = Vector2( 34, 11 )
+position = Vector2( 34, 8 )
 scale = Vector2( 2, 2 )
 frames = ExtResource( 4 )
-frame = 3
+frame = 1
 playing = true
-
-[node name="BlockStatDisplay" parent="Panel" instance=ExtResource( 2 )]
-margin_left = 18.0
-margin_top = 22.0
-margin_right = -16.0
-margin_bottom = -24.0
 
 [node name="LeftButton" type="TextureButton" parent="Panel"]
 margin_left = 14.0
-margin_top = 8.0
+margin_top = 5.0
 margin_right = 22.0
-margin_bottom = 16.0
+margin_bottom = 13.0
 texture_normal = ExtResource( 3 )
 
 [node name="RightButton" type="TextureButton" parent="Panel"]
 margin_left = 45.0
-margin_top = 8.0
+margin_top = 5.0
 margin_right = 53.0
-margin_bottom = 16.0
+margin_bottom = 13.0
 texture_normal = ExtResource( 5 )
 
-[node name="EnterDungeonButton" type="TextureButton" parent="Panel"]
+[node name="StatsMenu" type="Control" parent="Panel"]
+unique_name_in_owner = true
+visible = false
+margin_left = -15.0
+margin_top = 10.0
+margin_right = 25.0
+margin_bottom = 50.0
+
+[node name="BlockStatDisplay" parent="Panel/StatsMenu" instance=ExtResource( 2 )]
+unique_name_in_owner = true
+margin_left = 18.0
+margin_top = 22.0
+margin_right = -16.0
+margin_bottom = -18.0
+
+[node name="ItemMenu" type="Control" parent="Panel"]
+unique_name_in_owner = true
+margin_left = -15.0
+margin_top = 10.0
+margin_right = 25.0
+margin_bottom = 50.0
+
+[node name="HeldItemSlot" parent="Panel/ItemMenu" instance=ExtResource( 14 )]
+unique_name_in_owner = true
 margin_left = 17.0
-margin_top = 53.0
-margin_right = 49.0
-margin_bottom = 61.0
+margin_top = 21.0
+margin_right = -15.0
+margin_bottom = -19.0
+
+[node name="GroundItemSlot" parent="Panel/ItemMenu" instance=ExtResource( 14 )]
+unique_name_in_owner = true
+margin_left = 17.0
+margin_top = 37.0
+margin_right = -15.0
+margin_bottom = -3.0
+
+[node name="ItemSwapButton" type="TextureButton" parent="Panel/ItemMenu"]
+margin_left = 66.0
+margin_top = 30.0
+margin_right = 76.0
+margin_bottom = 40.0
+texture_normal = ExtResource( 15 )
+texture_pressed = ExtResource( 17 )
+texture_hover = ExtResource( 16 )
+
+[node name="EnterDungeonButton" type="TextureButton" parent="Panel"]
+margin_left = 30.0
+margin_top = 19.0
+margin_right = 62.0
+margin_bottom = 27.0
 texture_normal = ExtResource( 6 )
+
+[node name="StatsButton" type="TextureButton" parent="Panel"]
+unique_name_in_owner = true
+margin_left = 2.0
+margin_top = 17.0
+margin_right = 14.0
+margin_bottom = 29.0
+texture_normal = ExtResource( 10 )
+texture_pressed = ExtResource( 8 )
+texture_hover = ExtResource( 9 )
+texture_disabled = ExtResource( 8 )
+
+[node name="ItemButton" type="TextureButton" parent="Panel"]
+unique_name_in_owner = true
+margin_left = 16.0
+margin_top = 17.0
+margin_right = 28.0
+margin_bottom = 29.0
+texture_normal = ExtResource( 11 )
+texture_pressed = ExtResource( 13 )
+texture_hover = ExtResource( 12 )
+texture_disabled = ExtResource( 13 )
 
 [connection signal="pressed" from="Panel/LeftButton" to="." method="_on_LeftButton_pressed"]
 [connection signal="pressed" from="Panel/RightButton" to="." method="_on_RightButton_pressed"]
+[connection signal="pressed" from="Panel/ItemMenu/ItemSwapButton" to="." method="_on_ItemSwapButton_pressed"]
+[connection signal="pressed" from="Panel/StatsButton" to="." method="_on_StatsButton_pressed"]
+[connection signal="pressed" from="Panel/ItemButton" to="." method="_on_ItemButton_pressed"]

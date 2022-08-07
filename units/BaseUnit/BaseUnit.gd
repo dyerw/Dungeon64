@@ -13,6 +13,8 @@ var remaining_attacks: int
 var current_health: int setget set_current_health
 var is_moving
 
+var equipped_item = null
+
 # While units do things that should disable controls
 # they can request and release controls
 signal request_lock
