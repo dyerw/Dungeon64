@@ -81,3 +81,4 @@ func _on_ItemSwapButton_pressed():
 	_ground_item = tmp
 	held_item_slot.set_item(unit.equipped_item)
 	ground_item_slot.set_item(_ground_item)
+	stat_display.display_unit(unit)

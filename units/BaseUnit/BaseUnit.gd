@@ -85,3 +85,16 @@ func attack():
 func end_turn():
 	remaining_attacks = attacks
 	remaining_movement = movement
+
+func get_modified_stats():
+	var stats = {
+		"movement": movement,
+		"attacks": attacks,
+		"max_health": max_health,
+		"damage": damage,
+		"attack_range": attack_range
+	}
+	if equipped_item != null:
+		for stat in equipped_item.stats:
+			stats[stat] += equipped_item.stats[stat]
+	return stats
