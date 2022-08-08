@@ -38,8 +38,8 @@ var rare_item_table = [
 		}
 	}
 ]
-var rare_threshold = 105
-var uncommon_threshold = 75
+var rare_threshold = 10
+var uncommon_threshold = 5
 
 func get_enemies():
 	var enemies = []
@@ -49,36 +49,30 @@ func get_enemies():
 
 func get_reward_items():
 	var result = []
-	var first_item = generate_item(item_type_to_stat.keys(), 1)
+	var first_item = generate_item(item_type_to_stat.keys())
 	result.append(first_item)
 	var second_item_types = item_type_to_stat.keys()
 	ArrayUtil.remove_value(second_item_types, first_item["type"])
-	result.append(generate_item(second_item_types, 2))
+	result.append(generate_item(second_item_types))
 	return result
 
 func increase_depth():
 	_depth += 1
 
-func decide_item():
+func decide_tier():
 	var rng = RandomNumberGenerator.new()
 	rng.randomize()
-	var raw_roll = rng.randi_range(0, 100)
-	var roll_modifier = _depth * 5
-	var roll = raw_roll+roll_modifier
-	print("Just rolled for an item - raw ", raw_roll, "modifier ", roll_modifier, "total ", roll)
-	var table
-	if roll > rare_threshold:
-		table = rare_item_table
-	elif roll > uncommon_threshold:
-		table = uncommon_item_table
-	#else:
-		#table = generate_item()
-	var index = rng.randi_range(0, table.size()-1)
-	
-	return table[index]
+	var raw_roll = rng.randi_range(1, 5)
+	var modified_roll = raw_roll + _depth
+	if modified_roll > rare_threshold:
+		return 2
+	if modified_roll > uncommon_threshold:
+		return 1
+	return 0
 
-func generate_item(item_types, tier):
+func generate_item(item_types):
 	var item_type = ArrayUtil.choose(item_types)
+	var tier = decide_tier()
 	var item = {
 		"type": item_type, 
 		"rarity": rarities[tier],

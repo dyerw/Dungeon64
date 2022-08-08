@@ -131,6 +131,5 @@ func get_modified_stats():
 	if equipped_item != null:
 		for stat in equipped_item.stats:
 			stats[stat] += equipped_item.stats[stat]
-	print(stats)
 	return stats
 
