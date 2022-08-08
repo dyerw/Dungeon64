@@ -1,4 +1,4 @@
-[gd_scene load_steps=19 format=2]
+[gd_scene load_steps=20 format=2]
 
 [ext_resource path="res://images/arrows.png" type="Texture" id=1]
 [ext_resource path="res://images/check.png" type="Texture" id=2]
@@ -10,11 +10,12 @@
 [ext_resource path="res://screens/dungeon/GameBoard.gd" type="Script" id=8]
 [ext_resource path="res://screens/dungeon/UIOverlayTileMap.gd" type="Script" id=9]
 [ext_resource path="res://screens/dungeon/TileMap.gd" type="Script" id=10]
-[ext_resource path="res://units/Human/Human.tscn" type="PackedScene" id=11]
-[ext_resource path="res://units/Archer/Archer.tscn" type="PackedScene" id=12]
-[ext_resource path="res://units/Orc/Orc.tscn" type="PackedScene" id=13]
+[ext_resource path="res://images/ui/end_turn_button.png" type="Texture" id=11]
+[ext_resource path="res://images/ui/end_turn_button_hover.png" type="Texture" id=12]
+[ext_resource path="res://images/ui/end_turn_button_pressed.png" type="Texture" id=13]
 [ext_resource path="res://screens/dungeon/UIManager.gd" type="Script" id=14]
 [ext_resource path="res://screens/dungeon/ArrowOverlayTileMap.gd" type="Script" id=15]
+[ext_resource path="res://images/ui/end_turn_button_disabled.png" type="Texture" id=16]
 
 [sub_resource type="TileSet" id=25]
 2/name = "Minifantasy_DungeonWallTiles.png 2"
@@ -124,9 +125,6 @@ centered = false
 
 [node name="GameBoard" type="Node2D" parent="."]
 script = ExtResource( 8 )
-human = ExtResource( 11 )
-orc = ExtResource( 13 )
-archer = ExtResource( 12 )
 
 [node name="TerrainTileMap" type="TileMap" parent="GameBoard"]
 tile_set = SubResource( 25 )
@@ -156,5 +154,16 @@ cell_custom_transform = Transform2D( 1, 0, 0, 1, 0, 0 )
 format = 1
 script = ExtResource( 15 )
 
+[node name="EndTurnButton" type="TextureButton" parent="UIManager"]
+margin_left = 54.0
+margin_top = 54.0
+margin_right = 64.0
+margin_bottom = 64.0
+texture_normal = ExtResource( 11 )
+texture_pressed = ExtResource( 13 )
+texture_hover = ExtResource( 12 )
+texture_disabled = ExtResource( 16 )
+
 [connection signal="tile_left_clicked" from="GameBoard/TerrainTileMap" to="GameBoard" method="_on_TerrainTileMap_tile_left_clicked"]
 [connection signal="tile_right_clicked" from="GameBoard/TerrainTileMap" to="GameBoard" method="_on_TerrainTileMap_tile_right_clicked"]
+[connection signal="pressed" from="UIManager/EndTurnButton" to="UIManager" method="_on_EndTurnButton_pressed"]

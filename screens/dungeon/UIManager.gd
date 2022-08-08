@@ -61,9 +61,7 @@ func empty_tile_left_clicked(pos: Vector2):
 		return
 	pass
 
-func end_turn_clicked():
-	if _locked:
-		return
+func _on_EndTurnButton_pressed():
 	_set_selected(null)
 	_game_board.end_turn()
 	pass
@@ -99,6 +97,7 @@ func _on_mouse_entered_tile(tile: Vector2):
 
 func _on_request_lock(id):
 	_locked = true
+	$EndTurnButton.disabled = true
 	if !_lock_ids.has(id):
 		_lock_ids.push_back(id)
 
@@ -106,4 +105,7 @@ func _on_release_lock(id):
 	if _lock_ids.has(id):
 		_lock_ids.remove(_lock_ids.find(id))
 		if _lock_ids.size() == 0:
+			$EndTurnButton.disabled = false
 			_locked = false
+
+

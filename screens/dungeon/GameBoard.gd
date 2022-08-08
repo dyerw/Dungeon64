@@ -199,10 +199,6 @@ func _on_Unit_died(unit: Node2D):
 		emit_signal("battle_completed")
 
 func _on_TerrainTileMap_tile_left_clicked(pos: Vector2):
-	# FXIME: Button hack
-	if pos == Vector2(0,0):
-		_input_handler.end_turn_clicked()
-	
 	var u = get_unit_by_grid_pos(pos)
 	if u != null:
 		if u in _player_units:
