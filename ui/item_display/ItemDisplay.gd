@@ -2,6 +2,7 @@ extends Control
 
 var boot_texture = preload("res://images/items/boot.png")
 var sword_texture = preload("res://images/items/sword.png")
+var helmet_texture = preload("res://images/items/helmet.png")
 
 var common_background_texture = preload("res://images/items/common.png")
 var uncommon_background_texture = preload("res://images/items/uncommon.png")
@@ -15,7 +16,8 @@ var rarity_to_texture = {
 
 var item_to_texture = {
 	"boot": boot_texture,
-	"sword": sword_texture
+	"sword": sword_texture,
+	"helmet": helmet_texture
 }
 
 func set_item(item):

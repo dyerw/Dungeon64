@@ -10,7 +10,7 @@ var _stats_children = []
 var stat_to_display = {
 	"damage": damage_stat_display,
 	"movement": movement_stat_display,
-	"health": health_stat_display,
+	"max_health": health_stat_display,
 	"attack_range": range_stat_display
 }
 

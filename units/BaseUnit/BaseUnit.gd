@@ -56,6 +56,9 @@ func get_base_damage():
 func set_current_health(h: int):
 	current_health = h
 	$HealthPips.health = h
+	
+func full_heal():
+	set_current_health(get_max_health())
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
