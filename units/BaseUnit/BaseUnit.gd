@@ -56,9 +56,11 @@ func get_base_damage():
 func set_current_health(h: int):
 	current_health = h
 	$HealthPips.health = h
-	
-func full_heal():
+
+# To be called when the unit is between battles
+func between_game_reset():
 	set_current_health(get_max_health())
+	self.visible = true
 
 # Called when the node enters the scene tree for the first time.
 func _ready():

@@ -15,7 +15,7 @@ damage = 1
 [node name="AnimatedSprite" type="AnimatedSprite" parent="."]
 self_modulate = Color( 1, 0.109804, 0.109804, 1 )
 frames = ExtResource( 3 )
-frame = 14
+frame = 7
 playing = true
 offset = Vector2( 5, 3 )
 

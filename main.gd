@@ -44,7 +44,7 @@ func _play_game():
 	var scene = dungeon_screen.instance()
 	add_child(scene)
 	for unit in _party:
-		unit.full_heal()
+		unit.between_game_reset()
 		var parent = unit.get_parent()
 		if parent != null:
 			parent.remove_child(unit)
