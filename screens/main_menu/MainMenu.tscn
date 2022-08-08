@@ -29,11 +29,20 @@ margin_bottom = 24.0
 custom_fonts/font = SubResource( 2 )
 text = "Dungeon"
 
+[node name="Label2" type="Label" parent="Panel"]
+margin_left = 22.0
+margin_top = 24.0
+margin_right = 41.0
+margin_bottom = 39.0
+custom_colors/font_color = Color( 0.682353, 0.137255, 0.203922, 1 )
+custom_fonts/font = SubResource( 2 )
+text = "64"
+
 [node name="PlayButton" type="TextureButton" parent="Panel"]
 margin_left = 23.0
-margin_top = 37.0
+margin_top = 42.0
 margin_right = 39.0
-margin_bottom = 45.0
+margin_bottom = 50.0
 texture_normal = ExtResource( 2 )
 texture_pressed = ExtResource( 5 )
 texture_hover = ExtResource( 4 )
