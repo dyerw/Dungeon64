@@ -71,7 +71,10 @@ func _set_selected(unit: Node2D):
 	_selected = unit
 	$ArrowOverlayTileMap.clear()
 	$UIOverlayTileMap.clear()
+	$LineStatDisplay.visible = false
 	if _selected != null:
+		$LineStatDisplay.visible = true
+		$LineStatDisplay.display_unit(unit)
 		_highlight_moveable(_selected)
 		_highlight_attackable(_selected)
 

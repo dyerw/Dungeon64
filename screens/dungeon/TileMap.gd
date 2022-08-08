@@ -16,11 +16,17 @@ var _terrain_blocking = {
 	TERRAIN_TYPE.FLOOR: false
 }
 
+func _inbounds(v: Vector2) -> bool:
+	return v.x > 0 and v.x < 7 and v.y > 0 and v.y < 7
+
 func _input(event):
-	if event is InputEventMouseButton and event.button_index == BUTTON_LEFT and event.pressed:
-		emit_signal("tile_left_clicked", world_to_map(event.position))
-	if event is InputEventMouseButton and event.button_index == BUTTON_RIGHT and event.pressed:
-		emit_signal("tile_right_clicked", world_to_map(event.position))
+	if event is InputEventMouseButton:
+		var tile = world_to_map(event.position)
+		if _inbounds(tile):
+			if event.button_index == BUTTON_LEFT and event.pressed:
+				emit_signal("tile_left_clicked", tile)
+			if event.button_index == BUTTON_RIGHT and event.pressed:
+				emit_signal("tile_right_clicked", tile)
 
 func get_terrain(grid_pos: Vector2):
 	var cell = get_cell(grid_pos.x, grid_pos.y)

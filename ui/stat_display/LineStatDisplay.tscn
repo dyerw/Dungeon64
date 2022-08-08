@@ -1,0 +1,23 @@
+[gd_scene load_steps=2 format=2]
+
+[ext_resource path="res://ui/stat_display/BlockStatDisplay.tscn" type="PackedScene" id=1]
+
+[node name="LineStatDisplay" instance=ExtResource( 1 )]
+margin_right = 0.0
+margin_bottom = -56.0
+
+[node name="HealthStatDisplay" parent="." index="1"]
+visible = false
+margin_left = 45.0
+margin_top = 0.0
+margin_right = -5.0
+
+[node name="MovementStatDisplay" parent="." index="2"]
+margin_left = 15.0
+margin_right = -15.0
+margin_bottom = -8.0
+
+[node name="RangeStatDisplay" parent="." index="3"]
+margin_left = 30.0
+margin_top = 0.0
+margin_right = -20.0
