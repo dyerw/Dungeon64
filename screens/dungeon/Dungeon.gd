@@ -18,10 +18,19 @@ func intialize(party, enemies):
 		unit.end_turn()
 		$GameBoard.add_unit(unit, Vector2(i + 1, 1), true)
 		i += 1
-	i = 0
-	for unit in enemies:
-		$GameBoard.add_unit(unit, Vector2(6 - i, 6), false)
-		i += 1
+		
+		
+	# Enemy placement
+	var rng = RandomNumberGenerator.new()
+	rng.randomize()
+	var taken_positions = []
+	var enemies_to_place: Array = enemies.duplicate()
+	while enemies_to_place.size() > 0:
+		var pos = Vector2(rng.randi_range(1,6), rng.randi_range(4,6))
+		if !(pos in taken_positions):
+			var enemy = enemies_to_place.pop_front()
+			$GameBoard.add_unit(enemy, pos, false)
+			taken_positions.push_back(pos)
 
 func _on_battle_completed():
 	emit_signal("battle_completed")
