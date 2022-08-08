@@ -2,6 +2,8 @@ class_name LevelGenerator
 extends Reference
 
 var orc = preload("res://units/Orc/Orc.tscn")
+var big_orc = preload("res://units/BigOrc/BigOrc.tscn")
+var fast_orc = preload("res://units/FastOrc/FastOrc.tscn")
 
 # Depth is how far into dungeon you currently are,
 # as it increases enemies get more difficult and
@@ -14,37 +16,25 @@ var item_type_to_stat = {
 }
 
 var rarities = ["common", "uncommon", "rare"]
+var common_enemies = [orc, big_orc, fast_orc]
+var uncommon_enemies = [big_orc]
+var rare_enemies = [fast_orc]
+var enemy_tables = [common_enemies, uncommon_enemies, rare_enemies]
 
 var all_possible_modifiers = ["max_health", "movement", "damage", "attack_range"] # TODO: Add range somehow
-
-var uncommon_item_table = [
-	{
-		"type": "helmet", 
-		"rarity": "uncommon",
-		"stats": {
-			"max_health": 1,
-			"movement": 1
-		}
-	}
-]
-
-var rare_item_table = [
-	{
-		"type": "helmet", 
-		"rarity": "rare",
-		"stats": {
-			"max_health": 2,
-			"movement": 1
-		}
-	}
-]
 var rare_threshold = 10
 var uncommon_threshold = 5
 
 func get_enemies():
 	var enemies = []
-	for i in _depth * 2 + 1:
-		enemies.push_back(orc.instance())
+	var balance = _depth * 2 + 1
+	var tier = 0
+	var enemy_table
+	while balance >= 0:
+		tier = decide_tier()
+		enemy_table = ArrayUtil.choose(enemy_tables)
+		enemies.push_back(ArrayUtil.choose(enemy_table).instance())
+		balance -= (tier + 1)
 	return enemies
 
 func get_reward_items():
