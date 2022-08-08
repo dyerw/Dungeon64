@@ -39,27 +39,26 @@ func player_unit_right_clicked(unit: Node2D):
 func enemy_unit_left_clicked(unit: Node2D):
 	if _locked:
 		return
-	pass
-
-func enemy_unit_right_clicked(unit: Node2D):
-	if _locked:
-		return
 	var attacked = _game_board.resolve_attack(_selected, unit)
 	if attacked:
 		_set_selected(null)
 
+func enemy_unit_right_clicked(unit: Node2D):
+	if _locked:
+		return
+
 func empty_tile_right_clicked(pos: Vector2):
+	if _locked:
+		return
+	_set_selected(null)
+
+func empty_tile_left_clicked(pos: Vector2):
 	if _locked:
 		return
 	var moved = _game_board.move_unit(_selected, pos)
 	if moved:
 		$ArrowOverlayTileMap.clear()
 		_set_selected(null)
-
-func empty_tile_left_clicked(pos: Vector2):
-	if _locked:
-		return
-	pass
 
 func _on_EndTurnButton_pressed():
 	_set_selected(null)
@@ -70,6 +69,7 @@ func _on_EndTurnButton_pressed():
 
 func _set_selected(unit: Node2D):
 	_selected = unit
+	$ArrowOverlayTileMap.clear()
 	$UIOverlayTileMap.clear()
 	if _selected != null:
 		_highlight_moveable(_selected)
