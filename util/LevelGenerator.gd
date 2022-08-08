@@ -7,23 +7,15 @@ var orc = preload("res://units/Orc/Orc.tscn")
 # as it increases enemies get more difficult and
 # rewards get stronger
 var _depth = 0
+var item_type_to_stat = {
+	"boot": "movement",
+	"helmet": "max_health",
+	"sword": "damage"
+}
 
-var common_item_table = [
-	{
-		"type": "boot", 
-		"rarity": "common",
-		"stats": {
-			"movement": 1
-		}
-	},
-	{
-		"type": "sword", 
-		"rarity": "common",
-		"stats": {
-			"damage": 1
-		}
-	}
-]
+var rarities = ["common", "uncommon", "rare"]
+
+var all_possible_modifiers = ["max_health", "movement", "damage", "attack_range"] # TODO: Add range somehow
 
 var uncommon_item_table = [
 	{
@@ -57,14 +49,17 @@ func get_enemies():
 
 func get_reward_items():
 	var result = []
-	result.append(decide_item())
-	result.append(decide_item())
+	var first_item = generate_item(item_type_to_stat.keys(), 1)
+	result.append(first_item)
+	var second_item_types = item_type_to_stat.keys()
+	ArrayUtil.remove_value(second_item_types, first_item["type"])
+	result.append(generate_item(second_item_types, 2))
 	return result
 
 func increase_depth():
 	_depth += 1
 
-func decide_item() -> Dictionary:
+func decide_item():
 	var rng = RandomNumberGenerator.new()
 	rng.randomize()
 	var raw_roll = rng.randi_range(0, 100)
@@ -76,8 +71,26 @@ func decide_item() -> Dictionary:
 		table = rare_item_table
 	elif roll > uncommon_threshold:
 		table = uncommon_item_table
-	else:
-		table = common_item_table
+	#else:
+		#table = generate_item()
 	var index = rng.randi_range(0, table.size()-1)
 	
 	return table[index]
+
+func generate_item(item_types, tier):
+	var item_type = ArrayUtil.choose(item_types)
+	var item = {
+		"type": item_type, 
+		"rarity": rarities[tier],
+		"stats": {
+			item_type_to_stat[item_type]: 1
+		}
+	}
+	for i in tier:
+		var modifier = ArrayUtil.choose(all_possible_modifiers)
+		if modifier in item["stats"]:
+			item["stats"][modifier] += 1
+		else:
+			item["stats"][modifier] = 1
+			
+	return item

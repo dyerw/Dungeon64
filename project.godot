@@ -9,6 +9,11 @@
 config_version=4
 
 _global_script_classes=[ {
+"base": "Reference",
+"class": "ArrayUtil",
+"language": "GDScript",
+"path": "res://util/ArrayUtil.gd"
+}, {
 "base": "Node",
 "class": "DefaultEnemyBehavior",
 "language": "GDScript",
@@ -35,6 +40,7 @@ _global_script_classes=[ {
 "path": "res://util/UUID.gd"
 } ]
 _global_script_class_icons={
+"ArrayUtil": "",
 "DefaultEnemyBehavior": "",
 "LevelGenerator": "",
 "Pathing": "",
