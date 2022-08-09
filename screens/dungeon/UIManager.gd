@@ -9,6 +9,8 @@ var _game_board
 
 var _hovered_tile = null
 
+var blue_styleboxflat = preload("res://resources/stylebox/blue_styleboxflat.tres")
+var red_styleboxflat = preload("res://resources/stylebox/red_styleboxflat.tres")
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -67,14 +69,23 @@ func _on_EndTurnButton_pressed():
 
 # Private
 
+func _show_unit_stats(unit):
+	if unit:
+		$LineStatDisplay.visible = true
+		$LineStatDisplay.display_unit(unit)
+		if _game_board.is_enemy_unit(unit):
+			$StatDisplayBackingPanel.add_stylebox_override("panel", red_styleboxflat)
+		else:
+			$StatDisplayBackingPanel.add_stylebox_override("panel", blue_styleboxflat)
+	else:
+		$StatDisplayBackingPanel.remove_stylebox_override("panel")
+		$LineStatDisplay.visible = false
+
 func _set_selected(unit: Node2D):
 	_selected = unit
 	$ArrowOverlayTileMap.clear()
 	$UIOverlayTileMap.clear()
-	$LineStatDisplay.visible = false
 	if _selected != null:
-		$LineStatDisplay.visible = true
-		$LineStatDisplay.display_unit(unit)
 		_highlight_moveable(_selected)
 		_highlight_attackable(_selected)
 
@@ -95,6 +106,8 @@ func _on_mouse_entered_tile(tile: Vector2):
 			$ArrowOverlayTileMap.draw_path(path)
 		else:
 			$ArrowOverlayTileMap.draw_path([])
+	var unit_on_tile = _game_board.get_unit_by_grid_pos(tile)
+	_show_unit_stats(unit_on_tile)
 
 # Signal Handlers
 
