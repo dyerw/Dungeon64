@@ -13,5 +13,5 @@ unit_name = "Human"
 
 [node name="AnimatedSprite" parent="." index="0"]
 frames = ExtResource( 2 )
-frame = 9
+frame = 3
 playing = true

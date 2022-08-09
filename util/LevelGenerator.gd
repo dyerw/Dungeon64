@@ -4,6 +4,7 @@ extends Reference
 var orc = preload("res://units/Orc/Orc.tscn")
 var big_orc = preload("res://units/BigOrc/BigOrc.tscn")
 var fast_orc = preload("res://units/FastOrc/FastOrc.tscn")
+var necromancer = preload("res://units/Necromancer/Necromancer.tscn")
 
 # Depth is how far into dungeon you currently are,
 # as it increases enemies get more difficult and
@@ -35,6 +36,7 @@ func get_enemies():
 		enemy_table = ArrayUtil.choose(enemy_tables)
 		enemies.push_back(ArrayUtil.choose(enemy_table).instance())
 		balance -= (tier + 1)
+	enemies.push_back(necromancer.instance())
 	return enemies
 
 func get_reward_items():

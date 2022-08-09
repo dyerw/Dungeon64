@@ -61,9 +61,11 @@ func set_current_health(h: int):
 func between_game_reset():
 	set_current_health(get_max_health())
 	self.visible = true
+	$AnimatedSprite.animation = "default"
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
+	$AnimatedSprite.playing = true
 	remaining_movement = movement
 	remaining_attacks = attacks
 	set_current_health(max_health)
@@ -134,4 +136,9 @@ func get_modified_stats():
 		for stat in equipped_item.stats:
 			stats[stat] += equipped_item.stats[stat]
 	return stats
+
+# Overridables
+
+func on_unit_died(unit, pos, game_board):
+	pass
 

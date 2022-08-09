@@ -192,9 +192,14 @@ func _update_grid_to_unit(unit: Node2D, new_grid_pos: Vector2):
 # Signal Handlers
 
 func _on_Unit_died(unit: Node2D):
+	var pos = get_unit_grid_pos(unit)
 	_player_units.erase(unit)
 	_enemy_units.erase(unit)
-	_grid_to_unit.erase(get_unit_grid_pos(unit))
+	_grid_to_unit.erase(pos)
+	for u in _enemy_units:
+		u.on_unit_died(unit, pos, self)
+	for u in _player_units:
+		u.on_unit_died(unit, pos, self)
 	if _enemy_units.size() == 0:
 		emit_signal("battle_completed")
 

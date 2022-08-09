@@ -1,9 +1,10 @@
-[gd_scene load_steps=31 format=2]
+[gd_scene load_steps=43 format=2]
 
 [ext_resource path="res://units/BaseUnit/BaseUnit.tscn" type="PackedScene" id=1]
 [ext_resource path="res://images/Skellington/SkellingtonIdle.png" type="Texture" id=2]
 [ext_resource path="res://images/Skellington/SkellingtonWalk.png" type="Texture" id=3]
 [ext_resource path="res://images/Skellington/SkellingtonAttack.png" type="Texture" id=4]
+[ext_resource path="res://images/Skellington/SkellingtonDie.png" type="Texture" id=5]
 
 [sub_resource type="AtlasTexture" id=21]
 atlas = ExtResource( 4 )
@@ -89,6 +90,50 @@ region = Rect2( 104, 0, 8, 8 )
 atlas = ExtResource( 2 )
 region = Rect2( 112, 0, 8, 8 )
 
+[sub_resource type="AtlasTexture" id=27]
+atlas = ExtResource( 5 )
+region = Rect2( 0, 0, 10, 10 )
+
+[sub_resource type="AtlasTexture" id=28]
+atlas = ExtResource( 5 )
+region = Rect2( 10, 0, 10, 10 )
+
+[sub_resource type="AtlasTexture" id=29]
+atlas = ExtResource( 5 )
+region = Rect2( 20, 0, 10, 10 )
+
+[sub_resource type="AtlasTexture" id=30]
+atlas = ExtResource( 5 )
+region = Rect2( 30, 0, 10, 10 )
+
+[sub_resource type="AtlasTexture" id=31]
+atlas = ExtResource( 5 )
+region = Rect2( 40, 0, 10, 10 )
+
+[sub_resource type="AtlasTexture" id=32]
+atlas = ExtResource( 5 )
+region = Rect2( 50, 0, 10, 10 )
+
+[sub_resource type="AtlasTexture" id=33]
+atlas = ExtResource( 5 )
+region = Rect2( 60, 0, 10, 10 )
+
+[sub_resource type="AtlasTexture" id=34]
+atlas = ExtResource( 5 )
+region = Rect2( 70, 0, 10, 10 )
+
+[sub_resource type="AtlasTexture" id=35]
+atlas = ExtResource( 5 )
+region = Rect2( 80, 0, 10, 10 )
+
+[sub_resource type="AtlasTexture" id=36]
+atlas = ExtResource( 5 )
+region = Rect2( 90, 0, 10, 10 )
+
+[sub_resource type="AtlasTexture" id=37]
+atlas = ExtResource( 5 )
+region = Rect2( 100, 0, 10, 10 )
+
 [sub_resource type="AtlasTexture" id=17]
 atlas = ExtResource( 3 )
 region = Rect2( 0, 0, 8, 8 )
@@ -117,6 +162,11 @@ animations = [ {
 "name": "default",
 "speed": 5.0
 }, {
+"frames": [ SubResource( 27 ), SubResource( 28 ), SubResource( 29 ), SubResource( 30 ), SubResource( 31 ), SubResource( 32 ), SubResource( 33 ), SubResource( 34 ), SubResource( 35 ), SubResource( 36 ), SubResource( 37 ) ],
+"loop": true,
+"name": "die",
+"speed": 5.0
+}, {
 "frames": [ SubResource( 17 ), SubResource( 18 ), SubResource( 19 ), SubResource( 20 ) ],
 "loop": true,
 "name": "move",
@@ -124,8 +174,11 @@ animations = [ {
 } ]
 
 [node name="Skeleton" instance=ExtResource( 1 )]
+movement = 1
+attacks = 1
+max_health = 1
+attack_range = 1
+damage = 1
 
 [node name="AnimatedSprite" parent="." index="0"]
 frames = SubResource( 16 )
-frame = 9
-playing = true
