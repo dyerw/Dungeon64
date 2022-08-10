@@ -143,6 +143,7 @@ attack_range = 1
 damage = 1
 
 [node name="AnimatedSprite" parent="." index="0"]
+position = Vector2( -1, 0 )
 frames = SubResource( 53 )
 speed_scale = 1.5
 

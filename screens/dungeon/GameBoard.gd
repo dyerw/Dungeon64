@@ -193,14 +193,17 @@ func _update_grid_to_unit(unit: Node2D, new_grid_pos: Vector2):
 
 func _on_Unit_died(unit: Node2D):
 	var pos = get_unit_grid_pos(unit)
-	_player_units.erase(unit)
-	_enemy_units.erase(unit)
+	if is_player_unit(unit):
+		_player_units.erase(unit)
+	if is_enemy_unit(unit):
+		_enemy_units.erase(unit)
 	_grid_to_unit.erase(pos)
 	for u in _enemy_units:
 		u.on_unit_died(unit, pos, self)
 	for u in _player_units:
 		u.on_unit_died(unit, pos, self)
 	if _enemy_units.size() == 0:
+		print(_enemy_units)
 		emit_signal("battle_completed")
 
 func _on_TerrainTileMap_tile_left_clicked(pos: Vector2):
