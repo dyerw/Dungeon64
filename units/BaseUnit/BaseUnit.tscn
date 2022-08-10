@@ -146,3 +146,5 @@ offset = Vector2( 5, 3 )
 
 [node name="HealthPips" type="Node2D" parent="."]
 script = ExtResource( 4 )
+
+[node name="HitAudioStreamPlayer" type="AudioStreamPlayer" parent="."]

@@ -71,6 +71,8 @@ func _ready():
 	set_current_health(max_health)
 
 func take_damage(d: int):
+	$HitAudioStreamPlayer.play()
+	
 	# Did we die???
 	if d >= current_health:
 		var screen_lock = ScreenLock.new()
