@@ -5,6 +5,7 @@ var orc = preload("res://units/Orc/Orc.tscn")
 var big_orc = preload("res://units/BigOrc/BigOrc.tscn")
 var fast_orc = preload("res://units/FastOrc/FastOrc.tscn")
 var necromancer = preload("res://units/Necromancer/Necromancer.tscn")
+var rat = preload("res://units/Rat/Rat.tscn")
 
 # Depth is how far into dungeon you currently are,
 # as it increases enemies get more difficult and
@@ -17,9 +18,9 @@ var item_type_to_stat = {
 }
 
 var rarities = ["common", "uncommon", "rare"]
-var common_enemies = [orc, big_orc, fast_orc]
+var common_enemies = [orc, rat]
 var uncommon_enemies = [big_orc]
-var rare_enemies = [fast_orc]
+var rare_enemies = [necromancer]
 var enemy_tables = [common_enemies, uncommon_enemies, rare_enemies]
 
 var all_possible_modifiers = ["max_health", "movement", "damage", "attack_range"] # TODO: Add range somehow
@@ -33,10 +34,9 @@ func get_enemies():
 	var enemy_table
 	while balance >= 0:
 		tier = decide_tier()
-		enemy_table = ArrayUtil.choose(enemy_tables)
+		enemy_table = enemy_tables[tier]
 		enemies.push_back(ArrayUtil.choose(enemy_table).instance())
 		balance -= (tier + 1)
-	enemies.push_back(necromancer.instance())
 	return enemies
 
 func get_reward_items():
