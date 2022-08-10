@@ -26,6 +26,12 @@ func initialize(input_handler):
 	default_enemy_behavior.connect("request_lock", input_handler, "_on_request_lock")
 	default_enemy_behavior.connect("release_lock", input_handler, "_on_release_lock")
 
+func _exit_tree():
+	for u in _player_units:
+		remove_child(u)
+	_player_units.resize(0)
+	self.queue_free()
+
 func add_unit(unit, grid_pos: Vector2, is_player: bool):
 	print("adding ", unit)
 	add_child(unit)
