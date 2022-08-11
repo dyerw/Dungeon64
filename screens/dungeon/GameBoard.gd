@@ -208,6 +208,9 @@ func _on_Unit_died(unit: Node2D):
 		u.on_unit_died(unit, pos, self)
 	for u in _player_units:
 		u.on_unit_died(unit, pos, self)
+	print("logs from: ", self)
+	print("enemy_units: ", _enemy_units)
+	print("player_units: ", _player_units)
 	if _enemy_units.size() == 0:
 		print(_enemy_units)
 		emit_signal("battle_completed")

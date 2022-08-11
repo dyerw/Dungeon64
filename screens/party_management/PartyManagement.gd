@@ -6,6 +6,7 @@ var _ground_item
 
 var archer_frames = preload("res://resources/frames/ArcherFrames.tres")
 var human_frames = preload("res://resources/frames/HumanFrames.tres")
+var paladin_frames = preload("res://resources/frames/PaladinFrames.tres")
 
 enum TabState { ITEM, STATS }
 
@@ -24,7 +25,8 @@ var _selected_tab = null
 
 var type_to_frames = {
 	"Human": human_frames,
-	"Archer": archer_frames
+	"Archer": archer_frames,
+	"Paladin": paladin_frames
 }
 
 func _ready():
