@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/Necromancer.png-1c67eacc7bacf2d81ad0e62274af3c58.stex"
+path="res://.import/NecroWalk3.png-11f239d7acc807c96494cf47697db367.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://images/Necromancer/Necromancer.png"
-dest_files=[ "res://.import/Necromancer.png-1c67eacc7bacf2d81ad0e62274af3c58.stex" ]
+source_file="res://images/Necromancer/NecroWalk3.png"
+dest_files=[ "res://.import/NecroWalk3.png-11f239d7acc807c96494cf47697db367.stex" ]
 
 [params]
 
