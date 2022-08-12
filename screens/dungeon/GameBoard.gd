@@ -179,13 +179,16 @@ func get_closest_unit(from: Node2D, is_player: bool) -> Node2D:
 	return closest
 
 func end_turn():
+	for u in _player_units:
+		var co = u.end_turn()
+		if co is GDScriptFunctionState:
+			yield(u, "end_turn_complete")
 	for u in _enemy_units:
 		u.end_turn()
 		var co = default_enemy_behavior.take_turn(u, self)
 		if co is GDScriptFunctionState:
 			yield(default_enemy_behavior, "turn_completed")
-	for u in _player_units:
-		u.end_turn()
+
 
 # Private
 

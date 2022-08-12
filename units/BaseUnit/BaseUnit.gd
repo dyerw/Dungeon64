@@ -22,6 +22,7 @@ signal release_lock
 signal died
 signal movement_complete
 signal attack_complete
+signal end_turn_complete
 
 func get_movement():
 	return get_modified_stats()["movement"]
@@ -120,7 +121,6 @@ func attack():
 	screen_lock.release(self)
 	emit_signal("attack_complete")
 
-# FIXME: Maybe name reset??
 func end_turn():
 	var attacks = get_attacks()
 	remaining_attacks = get_attacks()

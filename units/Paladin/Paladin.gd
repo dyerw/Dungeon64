@@ -8,3 +8,4 @@ func end_turn():
 		$AnimatedSprite.animation = "heal"
 		yield($AnimatedSprite, "animation_finished")
 		$AnimatedSprite.animation = "default"
+		emit_signal("end_turn_complete")
