@@ -1,0 +1,15 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+path="res://.import/dugneon.mp3-23d4f6168214ccf6363e3394ded3c23e.mp3str"
+
+[deps]
+
+source_file="res://audio/music/dugneon.mp3"
+dest_files=[ "res://.import/dugneon.mp3-23d4f6168214ccf6363e3394ded3c23e.mp3str" ]
+
+[params]
+
+loop=false
+loop_offset=0

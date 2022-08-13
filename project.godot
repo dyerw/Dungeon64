@@ -19,11 +19,6 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://screens/dungeon/ai/DefaultEnemyBehavior.gd"
 }, {
-"base": "",
-"class": "GitAPI",
-"language": "NativeScript",
-"path": "res://addons/godot-git-plugin/git_api.gdns"
-}, {
 "base": "Reference",
 "class": "LevelGenerator",
 "language": "GDScript",
@@ -47,7 +42,6 @@ _global_script_classes=[ {
 _global_script_class_icons={
 "ArrayUtil": "",
 "DefaultEnemyBehavior": "",
-"GitAPI": "",
 "LevelGenerator": "",
 "Pathing": "",
 "ScreenLock": "",

@@ -12,10 +12,6 @@ var _hovered_tile = null
 var blue_styleboxflat = preload("res://resources/stylebox/blue_styleboxflat.tres")
 var red_styleboxflat = preload("res://resources/stylebox/red_styleboxflat.tres")
 
-# Called when the node enters the scene tree for the first time.
-func _ready():
-	pass # Replace with function body
-
 func _input(event):
 	var mouse_motion = event as InputEventMouseMotion
 	if mouse_motion:
@@ -57,10 +53,11 @@ func empty_tile_right_clicked(pos: Vector2):
 func empty_tile_left_clicked(pos: Vector2):
 	if _locked:
 		return
-	var moved = _game_board.move_unit(_selected, pos)
-	if moved:
-		$ArrowOverlayTileMap.clear()
-		_set_selected(null)
+	if _selected != null:
+		var moved = _game_board.move_unit(_selected, pos)
+		if moved:
+			$ArrowOverlayTileMap.clear()
+			_set_selected(null)
 
 func _on_EndTurnButton_pressed():
 	_set_selected(null)
