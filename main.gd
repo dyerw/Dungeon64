@@ -4,6 +4,7 @@ var main_menu_screen = preload("res://screens/main_menu/MainMenu.tscn")
 var party_management_screen = preload("res://screens/party_management/PartyManagement.tscn")
 var dungeon_screen = preload("res://screens/dungeon/Dungeon.tscn")
 var reward_menu_screen = preload("res://screens/reward_menu/RewardMenu.tscn")
+var death_screen = preload("res://screens/death/DeathScreen.tscn")
 
 var paladin = preload("res://units/Paladin/Paladin.tscn")
 var archer = preload("res://units/Archer/Archer.tscn")
@@ -63,11 +64,22 @@ func _play_game():
 	_current_screen.intialize(_party, _level_generator.get_enemies())
 	_current_screen.connect("battle_completed", self, "_on_Dungeon_battle_completed")
 
+func _switch_to_death_screen():
+	remove_child(_current_screen)
+	_current_screen.queue_free()
+	_current_screen = death_screen.instance()
+	_current_screen.initialize(_level_generator.depth)
+	add_child(_current_screen)
+	
+
 func _on_RewardMenu_item_chosen(item):
 	_switch_to_party_management(item)
 
-func _on_Dungeon_battle_completed():
-	_switch_to_reward_menu()
+func _on_Dungeon_battle_completed(victory):
+	if victory:
+		_switch_to_reward_menu()
+	else:
+		_switch_to_death_screen()
 
 func _on_PartyManagemend_completed():
 	_level_generator.increase_depth()

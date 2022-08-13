@@ -33,7 +33,6 @@ func _exit_tree():
 	self.queue_free()
 
 func add_unit(unit, grid_pos: Vector2, is_player: bool):
-	print("adding ", unit)
 	add_child(unit)
 	unit.position = $TerrainTileMap.map_to_world(grid_pos)
 	_update_grid_to_unit(unit, grid_pos)
@@ -211,12 +210,10 @@ func _on_Unit_died(unit: Node2D):
 		u.on_unit_died(unit, pos, self)
 	for u in _player_units:
 		u.on_unit_died(unit, pos, self)
-	print("logs from: ", self)
-	print("enemy_units: ", _enemy_units)
-	print("player_units: ", _player_units)
 	if _enemy_units.size() == 0:
-		print(_enemy_units)
-		emit_signal("battle_completed")
+		emit_signal("battle_completed", true)
+	elif _player_units.size() == 0:
+		emit_signal("battle_completed", false)
 
 func _on_TerrainTileMap_tile_left_clicked(pos: Vector2):
 	var u = get_unit_by_grid_pos(pos)

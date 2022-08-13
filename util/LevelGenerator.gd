@@ -10,7 +10,7 @@ var rat = preload("res://units/Rat/Rat.tscn")
 # Depth is how far into dungeon you currently are,
 # as it increases enemies get more difficult and
 # rewards get stronger
-var _depth = 0
+var depth = 0
 var item_type_to_stat = {
 	"boot": "movement",
 	"helmet": "max_health",
@@ -29,7 +29,7 @@ var uncommon_threshold = 5
 
 func get_enemies():
 	var enemies = []
-	var balance = _depth * 2 + 1
+	var balance = depth * 2 + 1
 	var tier = 0
 	var enemy_table
 	while balance >= 0:
@@ -49,13 +49,13 @@ func get_reward_items():
 	return result
 
 func increase_depth():
-	_depth += 1
+	depth += 1
 
 func decide_tier():
 	var rng = RandomNumberGenerator.new()
 	rng.randomize()
 	var raw_roll = rng.randi_range(1, 5)
-	var modified_roll = raw_roll + _depth
+	var modified_roll = raw_roll + depth
 	if modified_roll > rare_threshold:
 		return 2
 	if modified_roll > uncommon_threshold:

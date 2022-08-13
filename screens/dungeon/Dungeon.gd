@@ -32,5 +32,5 @@ func intialize(party, enemies):
 			$GameBoard.add_unit(enemy, pos, false)
 			taken_positions.push_back(pos)
 
-func _on_battle_completed():
-	emit_signal("battle_completed")
+func _on_battle_completed(victory: bool):
+	emit_signal("battle_completed", victory)
