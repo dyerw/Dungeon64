@@ -9,6 +9,7 @@ attacks = 1
 max_health = 1
 attack_range = 3
 damage = 1
+unit_name = "Wizard"
 
 [node name="AnimatedSprite" parent="." index="0"]
 position = Vector2( 2, -3 )

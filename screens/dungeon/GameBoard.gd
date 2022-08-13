@@ -116,9 +116,25 @@ func get_attackable_tiles(unit: Node2D) -> PoolVector2Array:
 func resolve_attack(attacker: Node2D, defender: Node2D) -> bool:
 	if distance_between_units(attacker, defender) <= attacker.get_attack_range() and attacker.remaining_attacks > 0:
 		attacker.attack()
-		defender.take_damage(attacker.get_damage())
+		defender.take_damage(attacker.get_damage(), attacker.unit_name == "Wizard")
+		# Gross wizard hack pt 2
+		if attacker.unit_name == "Wizard":
+			for e in get_adjacent_enemies(get_unit_grid_pos(defender), [defender]):
+				e.take_damage(attacker.get_damage(), true)
 		return true
 	return false
+
+func get_adjacent_enemies(pos: Vector2, excluding_units: Array):
+	var adjacent_enemies = []
+	var exclusions = excluding_units.duplicate()
+	for dir in [Vector2(1,0), Vector2(0,1), Vector2(-1, 0), Vector2(1,0)]:
+		var u = get_unit_by_grid_pos(pos + dir)
+		if !(u in exclusions) and is_enemy_unit(u):
+			adjacent_enemies.push_back(u)
+			exclusions.push_back(u)
+			var adjacent_adjacent = get_adjacent_enemies(pos + dir, exclusions)
+			adjacent_enemies.append_array(adjacent_adjacent)
+	return adjacent_enemies
 
 func can_move(unit: Node2D, to: Vector2):
 	return pathing.is_reachable(

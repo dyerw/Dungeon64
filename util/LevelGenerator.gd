@@ -24,7 +24,7 @@ var rare_enemies = [necromancer]
 var enemy_tables = [common_enemies, uncommon_enemies, rare_enemies]
 
 var all_possible_modifiers = ["max_health", "movement", "damage", "attack_range"] # TODO: Add range somehow
-var rare_threshold = 10
+var rare_threshold = 8
 var uncommon_threshold = 5
 
 func get_enemies():

@@ -27,7 +27,8 @@ var _selected_tab = null
 var type_to_frames = {
 	"Human": human_frames,
 	"Archer": archer_frames,
-	"Paladin": paladin_frames
+	"Paladin": paladin_frames,
+	"Wizard": wizard_frames
 }
 
 func _ready():

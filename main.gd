@@ -18,6 +18,14 @@ var _current_screen = null
 var _party = []
 onready var _level_generator = LevelGenerator.new()
 
+func prep_switch():
+	for u in _party:
+		if !is_instance_valid(u):
+			print("uh oh")
+		var parent = u.get_parent()
+		if parent != null:
+			parent.remove_child(u)
+
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	$MusicAudioStreamPlayer.play()
@@ -28,6 +36,7 @@ func _ready():
 	add_child(_current_screen)
 
 func _switch_to_party_management(ground_item):
+	prep_switch()
 	remove_child(_current_screen)
 	_current_screen.queue_free()
 	_current_screen = party_management_screen.instance()
@@ -39,6 +48,7 @@ func _switch_to_party_management(ground_item):
 	)
 
 func _switch_to_reward_menu():
+	prep_switch()
 	remove_child(_current_screen)
 	_current_screen.queue_free()
 	_current_screen = reward_menu_screen.instance()
@@ -49,11 +59,13 @@ func _switch_to_reward_menu():
 	)
 
 func _play_game():
+	prep_switch()
 	$MusicAudioStreamPlayer.stream = battle_music
 	$MusicAudioStreamPlayer.play()
 	
 	var last_scene = _current_screen
 	remove_child(last_scene)
+	print(_party)
 	last_scene.queue_free()
 	_current_screen = dungeon_screen.instance()
 	add_child(_current_screen)
@@ -66,6 +78,7 @@ func _play_game():
 	_current_screen.connect("battle_completed", self, "_on_Dungeon_battle_completed")
 
 func _switch_to_death_screen():
+	prep_switch()
 	remove_child(_current_screen)
 	_current_screen.queue_free()
 	_current_screen = death_screen.instance()

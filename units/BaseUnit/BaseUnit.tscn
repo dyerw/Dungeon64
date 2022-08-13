@@ -1,7 +1,8 @@
-[gd_scene load_steps=28 format=2]
+[gd_scene load_steps=33 format=2]
 
 [ext_resource path="res://units/BaseUnit/BaseUnit.gd" type="Script" id=1]
 [ext_resource path="res://images/Wizard/wizard.png" type="Texture" id=2]
+[ext_resource path="res://images/Wizard/spelleffect.png" type="Texture" id=3]
 [ext_resource path="res://units/BaseUnit/HealthPips.gd" type="Script" id=4]
 
 [sub_resource type="AtlasTexture" id=1]
@@ -120,6 +121,26 @@ animations = [ {
 "speed": 5.0
 } ]
 
+[sub_resource type="AtlasTexture" id=38]
+atlas = ExtResource( 3 )
+region = Rect2( 0, 0, 8, 8 )
+
+[sub_resource type="AtlasTexture" id=39]
+atlas = ExtResource( 3 )
+region = Rect2( 8, 0, 8, 8 )
+
+[sub_resource type="AtlasTexture" id=40]
+atlas = ExtResource( 3 )
+region = Rect2( 16, 0, 8, 8 )
+
+[sub_resource type="SpriteFrames" id=41]
+animations = [ {
+"frames": [ SubResource( 38 ), SubResource( 39 ), SubResource( 40 ) ],
+"loop": true,
+"name": "default",
+"speed": 5.0
+} ]
+
 [node name="BaseUnitNode2D" type="Node2D"]
 script = ExtResource( 1 )
 
@@ -133,3 +154,8 @@ offset = Vector2( 5, 3 )
 script = ExtResource( 4 )
 
 [node name="HitAudioStreamPlayer" type="AudioStreamPlayer" parent="."]
+
+[node name="EffectSprite" type="AnimatedSprite" parent="."]
+visible = false
+position = Vector2( 4, 4 )
+frames = SubResource( 41 )

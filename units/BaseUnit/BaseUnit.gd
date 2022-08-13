@@ -71,22 +71,29 @@ func _ready():
 	remaining_attacks = attacks
 	set_current_health(max_health)
 
-func take_damage(d: int):
+func take_damage(d: int, from_wizard: bool):
 	$HitAudioStreamPlayer.play()
+	var screen_lock = ScreenLock.new()
+	screen_lock.request(self)
 	
+	# Gross wizard hack pt 1
+	if from_wizard:
+		$EffectSprite.visible = true
+		$EffectSprite.play()
+		yield($EffectSprite, "animation_finished")
+		$EffectSprite.visible = false
+		$EffectSprite.stop()
 	# Did we die???
 	if d >= current_health:
-		var screen_lock = ScreenLock.new()
-		screen_lock.request(self)
 		set_current_health(0)
 		$AnimatedSprite.animation = "die"
 		yield($AnimatedSprite, "animation_finished")
 		emit_signal("died", self)
 		screen_lock.release(self)
-		
 		self.visible = false
 	else:
 		set_current_health(current_health - d)
+		screen_lock.release(self)
 
 func move(path: PoolVector2Array):
 	is_moving = true
