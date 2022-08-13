@@ -12,8 +12,7 @@ func _ready():
 	$GameBoard.connect("battle_completed", self, "_on_battle_completed")
 
 func intialize(party, enemies):
-	print("Being initialized with party: ", party)
-	var i = 0
+	var i = 2
 	for unit in party:
 		unit.end_turn()
 		$GameBoard.add_unit(unit, Vector2(i + 1, 1), true)

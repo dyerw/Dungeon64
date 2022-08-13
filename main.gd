@@ -8,6 +8,7 @@ var death_screen = preload("res://screens/death/DeathScreen.tscn")
 
 var paladin = preload("res://units/Paladin/Paladin.tscn")
 var archer = preload("res://units/Archer/Archer.tscn")
+var wizard = preload("res://units/Wizard/Wizard.tscn")
 
 var main_music = preload("res://audio/music/dugneon.mp3")
 var battle_music = preload("res://audio/music/battle.mp3")
@@ -20,7 +21,7 @@ onready var _level_generator = LevelGenerator.new()
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	$MusicAudioStreamPlayer.play()
-	_party = [paladin.instance(), archer.instance()]
+	_party = [archer.instance(), paladin.instance(), wizard.instance()]
 	
 	_current_screen = main_menu_screen.instance()
 	_current_screen.connect("play_button_pressed", self, "_play_game")
