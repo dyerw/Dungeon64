@@ -223,7 +223,10 @@ func _on_Unit_died(unit: Node2D):
 		_enemy_units.erase(unit)
 	_grid_to_unit.erase(pos)
 	for u in _enemy_units:
-		u.on_unit_died(unit, pos, self)
+		var handled = u.on_unit_died(unit, pos, self)
+		# Gross necromancer hack pt 1
+		if handled:
+			break
 	for u in _player_units:
 		u.on_unit_died(unit, pos, self)
 	if _enemy_units.size() == 0:

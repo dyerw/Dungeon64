@@ -149,5 +149,5 @@ func get_modified_stats():
 # Overridables
 
 func on_unit_died(unit, pos, game_board):
-	pass
+	return false
 

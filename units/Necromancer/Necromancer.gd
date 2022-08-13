@@ -10,3 +10,4 @@ func on_unit_died(unit, pos, game_board):
 	yield($AnimatedSprite, "animation_finished")
 	$AnimatedSprite.animation = "default"
 	screen_lock.release(self)
+	return true
