@@ -181,13 +181,14 @@ func get_closest_unit(from: Node2D, is_player: bool) -> Node2D:
 	var min_dist = 99
 	var closest = null
 	for u in units:
-		# FIXME: If unit is inaccessible is this 0?
 		var u_grid_pos = get_unit_grid_pos(u)
 		var dist = pathing.get_shortest_path(
 			get_unit_grid_pos(from),
 			u_grid_pos,
 			get_blocked_tiles([u_grid_pos])
 		).size()
+		if dist == 0:
+			continue
 		if dist < min_dist:
 			closest = u
 			min_dist = dist
