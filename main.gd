@@ -98,3 +98,8 @@ func _on_Dungeon_battle_completed(victory):
 func _on_PartyManagemend_completed():
 	_level_generator.increase_depth()
 	_play_game()
+
+func _input(event):
+	if event is InputEventKey and event.scancode == KEY_M:
+		$MusicAudioStreamPlayer.stop()
+

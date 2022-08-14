@@ -172,9 +172,9 @@ animations = [ {
 
 [node name="Necromancer" instance=ExtResource( 1 )]
 script = ExtResource( 3 )
-movement = 2
+movement = 1
 attacks = 1
-max_health = 1
+max_health = 2
 attack_range = 1
 damage = 1
 
