@@ -18,7 +18,7 @@ var _current_screen = null
 var _party = []
 onready var _level_generator = LevelGenerator.new()
 
-var party_options = [paladin, archer, wizard]
+var party_options = [ wizard]
 
 func prep_switch():
 	for u in _party:

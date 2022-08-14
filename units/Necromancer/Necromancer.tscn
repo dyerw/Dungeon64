@@ -177,6 +177,7 @@ attacks = 1
 max_health = 2
 attack_range = 1
 damage = 1
+unit_name = "Necromancer"
 
 [node name="AnimatedSprite" parent="." index="0"]
 position = Vector2( -5, -3 )
