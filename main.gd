@@ -18,6 +18,8 @@ var _current_screen = null
 var _party = []
 onready var _level_generator = LevelGenerator.new()
 
+var party_options = [paladin, archer, wizard]
+
 func prep_switch():
 	for u in _party:
 		if !is_instance_valid(u):
@@ -29,7 +31,8 @@ func prep_switch():
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	$MusicAudioStreamPlayer.play()
-	_party = [archer.instance(), paladin.instance(), wizard.instance()]
+	for i in 3:
+		_party.push_back(ArrayUtil.choose(party_options).instance())
 	
 	_current_screen = main_menu_screen.instance()
 	_current_screen.connect("play_button_pressed", self, "_play_game")

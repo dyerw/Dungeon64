@@ -30,7 +30,7 @@ var uncommon_threshold = 5
 
 func get_enemies():
 	var enemies = []
-	var balance = depth * 2 + 1
+	var balance = depth * 3 + 1
 	var tier = 0
 	var enemy_table
 	while balance >= 0:
