@@ -6,6 +6,7 @@ var big_orc = preload("res://units/BigOrc/BigOrc.tscn")
 var fast_orc = preload("res://units/FastOrc/FastOrc.tscn")
 var necromancer = preload("res://units/Necromancer/Necromancer.tscn")
 var rat = preload("res://units/Rat/Rat.tscn")
+var golem = preload("res://units/Golem/Golem.tscn")
 
 # Depth is how far into dungeon you currently are,
 # as it increases enemies get more difficult and
@@ -19,8 +20,8 @@ var item_type_to_stat = {
 
 var rarities = ["common", "uncommon", "rare"]
 var common_enemies = [orc, rat]
-var uncommon_enemies = [big_orc]
-var rare_enemies = [necromancer]
+var uncommon_enemies = [big_orc, orc, rat]
+var rare_enemies = [necromancer, big_orc, golem]
 var enemy_tables = [common_enemies, uncommon_enemies, rare_enemies]
 
 var all_possible_modifiers = ["max_health", "movement", "damage", "attack_range"] # TODO: Add range somehow

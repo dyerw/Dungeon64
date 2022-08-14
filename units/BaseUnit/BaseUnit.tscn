@@ -4,26 +4,23 @@
 [ext_resource path="res://images/Wizard/wizard.png" type="Texture" id=2]
 [ext_resource path="res://images/Wizard/spelleffect.png" type="Texture" id=3]
 [ext_resource path="res://units/BaseUnit/HealthPips.gd" type="Script" id=4]
+[ext_resource path="res://images/Golem/golem.png" type="Texture" id=5]
 
-[sub_resource type="AtlasTexture" id=1]
-atlas = ExtResource( 2 )
-region = Rect2( 165, 0, 15, 12 )
+[sub_resource type="AtlasTexture" id=24]
+atlas = ExtResource( 5 )
+region = Rect2( 228, 0, 12, 9 )
 
-[sub_resource type="AtlasTexture" id=2]
-atlas = ExtResource( 2 )
-region = Rect2( 180, 0, 15, 12 )
+[sub_resource type="AtlasTexture" id=25]
+atlas = ExtResource( 5 )
+region = Rect2( 240, 0, 12, 9 )
 
-[sub_resource type="AtlasTexture" id=3]
-atlas = ExtResource( 2 )
-region = Rect2( 195, 0, 15, 12 )
+[sub_resource type="AtlasTexture" id=26]
+atlas = ExtResource( 5 )
+region = Rect2( 252, 0, 12, 9 )
 
-[sub_resource type="AtlasTexture" id=4]
-atlas = ExtResource( 2 )
-region = Rect2( 210, 0, 15, 12 )
-
-[sub_resource type="AtlasTexture" id=5]
-atlas = ExtResource( 2 )
-region = Rect2( 225, 0, 15, 12 )
+[sub_resource type="AtlasTexture" id=27]
+atlas = ExtResource( 5 )
+region = Rect2( 264, 0, 12, 9 )
 
 [sub_resource type="AtlasTexture" id=6]
 atlas = ExtResource( 2 )
@@ -100,7 +97,7 @@ region = Rect2( 150, 0, 15, 12 )
 [sub_resource type="SpriteFrames" id=37]
 resource_local_to_scene = true
 animations = [ {
-"frames": [ SubResource( 1 ), SubResource( 2 ), SubResource( 3 ), SubResource( 4 ), SubResource( 5 ) ],
+"frames": [ SubResource( 24 ), SubResource( 25 ), SubResource( 26 ), SubResource( 27 ) ],
 "loop": true,
 "name": "attack",
 "speed": 5.0
