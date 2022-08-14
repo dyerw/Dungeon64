@@ -37,9 +37,10 @@ func player_unit_right_clicked(unit: Node2D):
 func enemy_unit_left_clicked(unit: Node2D):
 	if _locked:
 		return
-	var attacked = _game_board.resolve_attack(_selected, unit)
-	if attacked:
-		_set_selected(null)
+	if _selected != null:
+		var attacked = _game_board.resolve_attack(_selected, unit)
+		if attacked:
+			_set_selected(null)
 
 func enemy_unit_right_clicked(unit: Node2D):
 	if _locked:
