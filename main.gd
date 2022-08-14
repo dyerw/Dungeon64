@@ -28,9 +28,15 @@ func prep_switch():
 		if parent != null:
 			parent.remove_child(u)
 
-# Called when the node enters the scene tree for the first time.
 func _ready():
+	_switch_to_main_menu()
+
+func _switch_to_main_menu():
+	$MusicAudioStreamPlayer.stream = main_music
 	$MusicAudioStreamPlayer.play()
+	for u in _party:
+		u.queue_free()
+	_party = []
 	for i in 3:
 		_party.push_back(ArrayUtil.choose(party_options).instance())
 	
@@ -86,6 +92,7 @@ func _switch_to_death_screen():
 	_current_screen.queue_free()
 	_current_screen = death_screen.instance()
 	_current_screen.initialize(_level_generator.depth)
+	_current_screen.connect("death_screen_closed", self, "_on_DeathScreen_closed")
 	add_child(_current_screen)
 	
 
@@ -101,6 +108,10 @@ func _on_Dungeon_battle_completed(victory):
 func _on_PartyManagemend_completed():
 	_level_generator.increase_depth()
 	_play_game()
+
+func _on_DeathScreen_closed():
+	_level_generator.depth = 0
+	_switch_to_main_menu()
 
 func _input(event):
 	if event is InputEventKey and event.scancode == KEY_M:
