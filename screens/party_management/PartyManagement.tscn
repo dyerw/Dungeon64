@@ -30,7 +30,7 @@ theme = ExtResource( 1 )
 position = Vector2( 34, 8 )
 scale = Vector2( 2, 2 )
 frames = ExtResource( 4 )
-frame = 6
+frame = 2
 playing = true
 
 [node name="LeftButton" type="TextureButton" parent="Panel"]
@@ -82,6 +82,7 @@ margin_left = 17.0
 margin_top = 37.0
 margin_right = -15.0
 margin_bottom = -3.0
+ground_slot = true
 
 [node name="ItemSwapButton" type="TextureButton" parent="Panel/ItemMenu"]
 margin_left = 66.0
