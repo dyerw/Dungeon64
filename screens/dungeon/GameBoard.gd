@@ -227,9 +227,10 @@ func _on_Unit_died(unit: Node2D):
 		_enemy_units.erase(unit)
 	_grid_to_unit.erase(pos)
 	for u in _enemy_units:
-		if u.unit_name == "Necromancer":
+		if u.unit_name == "Necromancer" and u.resurrects > 0 and unit.unit_name != "Skeleton":
 			reviving_necromancer = u
 	if reviving_necromancer:
+		reviving_necromancer.resurrects -= 1
 		var screen_lock = ScreenLock.new()
 		screen_lock.request(reviving_necromancer)
 		if !(pos in get_blocked_tiles([])):
