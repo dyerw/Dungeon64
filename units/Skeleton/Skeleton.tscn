@@ -174,11 +174,12 @@ animations = [ {
 } ]
 
 [node name="Skeleton" instance=ExtResource( 1 )]
-movement = 4
+movement = 3
 attacks = 1
-max_health = 1
+max_health = 2
 attack_range = 1
-damage = 1
+damage = 2
+unit_name = "Skeleton"
 
 [node name="AnimatedSprite" parent="." index="0"]
 frames = SubResource( 16 )
