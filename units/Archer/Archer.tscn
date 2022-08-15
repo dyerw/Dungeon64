@@ -177,7 +177,7 @@ movement = 2
 attacks = 1
 max_health = 2
 attack_range = 4
-damage = 1
+damage = 2
 unit_name = "Archer"
 
 [node name="AnimatedSprite" parent="." index="0"]
