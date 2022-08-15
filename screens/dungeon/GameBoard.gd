@@ -77,6 +77,13 @@ func get_blocked_tiles(exceptions) -> PoolVector2Array:
 
 # Returns null if no unit
 func get_unit_by_grid_pos(grid_pos: Vector2) -> Node2D:
+	if _player_units.size() + _enemy_units.size() != _grid_to_unit.keys().size():
+		#fucko recovery mechanism
+		var all_units = _player_units.duplicate(true)
+		all_units.append_array(_enemy_units)
+		for unit in all_units:
+			print(unit)
+			_update_grid_to_unit(unit, get_unit_grid_pos(unit))
 	if grid_pos in _grid_to_unit:
 		return _grid_to_unit[grid_pos]
 	return null
@@ -206,7 +213,7 @@ func end_turn():
 func _update_grid_to_unit(unit: Node2D, new_grid_pos: Vector2):
 	var old_pos = get_unit_grid_pos(unit)
 	if old_pos in _grid_to_unit:
-		_grid_to_unit.erase(get_unit_grid_pos(unit))
+		_grid_to_unit.erase(old_pos)
 	_grid_to_unit[new_grid_pos] = unit
 
 # Signal Handlers
@@ -226,7 +233,8 @@ func _on_Unit_died(unit: Node2D):
 		var screen_lock = ScreenLock.new()
 		screen_lock.request(reviving_necromancer)
 		if !(pos in get_blocked_tiles([])):
-			self.add_unit(skeleton.instance(), pos, false)
+			var skelly = skeleton.instance()
+			self.add_unit(skelly, pos, false)
 		reviving_necromancer.attack()
 		screen_lock.release(reviving_necromancer)
 	if _enemy_units.size() == 0:
