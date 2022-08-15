@@ -145,9 +145,3 @@ func get_modified_stats():
 		for stat in equipped_item.stats:
 			stats[stat] += equipped_item.stats[stat]
 	return stats
-
-# Overridables
-
-func on_unit_died(unit, pos, game_board):
-	return false
-

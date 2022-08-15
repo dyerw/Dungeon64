@@ -1,6 +1,7 @@
 extends Node2D
 
 var pathing = Pathing.new()
+var skeleton = preload("res://units/Skeleton/Skeleton.tscn")
 
 var _player_units = []
 var _enemy_units = []
@@ -8,12 +9,6 @@ var _grid_to_unit = {}
 var _input_handler
 
 var default_enemy_behavior = DefaultEnemyBehavior.new()
-
-enum UnitType {
-	HUMAN,
-	ORC,
-	ARCHER
-}
 
 signal battle_completed
 
@@ -82,6 +77,13 @@ func get_blocked_tiles(exceptions) -> PoolVector2Array:
 
 # Returns null if no unit
 func get_unit_by_grid_pos(grid_pos: Vector2) -> Node2D:
+	if _player_units.size() + _enemy_units.size() != _grid_to_unit.keys().size():
+		#fucko recovery mechanism
+		var all_units = _player_units.duplicate(true)
+		all_units.append_array(_enemy_units)
+		for unit in all_units:
+			print(unit)
+			_update_grid_to_unit(unit, get_unit_grid_pos(unit))
 	if grid_pos in _grid_to_unit:
 		return _grid_to_unit[grid_pos]
 	return null
@@ -127,7 +129,7 @@ func resolve_attack(attacker: Node2D, defender: Node2D) -> bool:
 func get_adjacent_enemies(pos: Vector2, excluding_units: Array):
 	var adjacent_enemies = []
 	var exclusions = excluding_units.duplicate()
-	for dir in [Vector2(1,0), Vector2(0,1), Vector2(-1, 0), Vector2(1,0)]:
+	for dir in [Vector2(1,0), Vector2(0,1), Vector2(-1, 0), Vector2(0,-1)]:
 		var u = get_unit_by_grid_pos(pos + dir)
 		if !(u in exclusions) and is_enemy_unit(u):
 			adjacent_enemies.push_back(u)
@@ -211,25 +213,30 @@ func end_turn():
 func _update_grid_to_unit(unit: Node2D, new_grid_pos: Vector2):
 	var old_pos = get_unit_grid_pos(unit)
 	if old_pos in _grid_to_unit:
-		_grid_to_unit.erase(get_unit_grid_pos(unit))
+		_grid_to_unit.erase(old_pos)
 	_grid_to_unit[new_grid_pos] = unit
 
 # Signal Handlers
 
 func _on_Unit_died(unit: Node2D):
 	var pos = get_unit_grid_pos(unit)
+	var reviving_necromancer = null
 	if is_player_unit(unit):
 		_player_units.erase(unit)
 	if is_enemy_unit(unit):
 		_enemy_units.erase(unit)
 	_grid_to_unit.erase(pos)
 	for u in _enemy_units:
-		var handled = u.on_unit_died(unit, pos, self)
-		# Gross necromancer hack pt 1
-		if handled:
-			break
-	for u in _player_units:
-		u.on_unit_died(unit, pos, self)
+		if u.unit_name == "Necromancer":
+			reviving_necromancer = u
+	if reviving_necromancer:
+		var screen_lock = ScreenLock.new()
+		screen_lock.request(reviving_necromancer)
+		if !(pos in get_blocked_tiles([])):
+			var skelly = skeleton.instance()
+			self.add_unit(skelly, pos, false)
+		reviving_necromancer.attack()
+		screen_lock.release(reviving_necromancer)
 	if _enemy_units.size() == 0:
 		emit_signal("battle_completed", true)
 	elif _player_units.size() == 0:
